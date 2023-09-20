@@ -1,0 +1,4 @@
+ipywidgets
+jupyter
+nltk
+openai

@@ -34,12 +34,12 @@ def getSentiment(change):
   # Get the sentiment
   sentiment = analyzeSentiment(change['new'].strip())
 
-  with analysis:
-    if sentiment:
+  if sentiment:
+    with analysis:
       analysis.clear_output(wait=True)
       print(sentiment)
-    else:
-      analysis.clear_output()
+  else:
+    analysis.clear_output()
 
 analysis = widgets.Output(layout=widgets.Layout(margin_left='10px'))
 

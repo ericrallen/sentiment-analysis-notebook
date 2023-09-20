@@ -1,5 +1,3 @@
-import os
-
 import ipywidgets as widgets
 
 apiKeyInput = widgets.Text(
@@ -11,11 +9,11 @@ apiKeyInput = widgets.Text(
 apiKeyUpdateButton = widgets.Button(
   description='Update',
   disabled=False,
-  button_style='danger',
+  button_style='primary' if not apiKeyInput.value else 'danger',
 )
 
 modelDropdown = widgets.Dropdown(
-  options=[('GPT-3.5 Turbo', "gpt-3.5-turbo"), ('GPT-4', 'gpt-4')],
+  options=['gpt-3.5-turbo', 'gpt-4'],
   value='gpt-3.5-turbo',
   description='Model',
 )

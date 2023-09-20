@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Sentiment Analysis with ChatGPT &#8212; My Jupyter Book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'SentimentAnalysisWorkshop';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Sentiment Analysis with ChatGPT Workshop" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="README.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">My Jupyter Book</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="README.html">
+                    Sentiment Analysis with ChatGPT Workshop
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Sentiment Analysis with ChatGPT</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/SentimentAnalysisWorkshop.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Sentiment Analysis with ChatGPT</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-sentiment-analysis">What is sentiment analysis?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-analyze-sentiment">How do we analyze sentiment?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-sentiment-analysis-with-nltk">Simple sentiment analysis with NLTK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sentiment-analysis-works">How Sentiment Analysis Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-chatgpt-works">How ChatGPT works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-engineering">Prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-and-few-shot-prompting">Zero shot and few shot prompting</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sentiment-analysis-with-chatgpt">
+<h1>Sentiment Analysis with ChatGPT<a class="headerlink" href="#sentiment-analysis-with-chatgpt" title="Permalink to this heading">#</a></h1>
+<p>Sentiment Analysis is sort of like the “Hello, world!” of Natural Language Processing (NLP), but luckily for us, it’s a bit more fun than just echoing out a string.</p>
+<p>This notebook will guide you through analyzing sentiment with ChatGPT and discuss some of the differences between how you can approach this problem with a generative AI like ChatGPT versus how you might have approached this problem in the past.</p>
+<section id="what-is-sentiment-analysis">
+<h2>What is sentiment analysis?<a class="headerlink" href="#what-is-sentiment-analysis" title="Permalink to this heading">#</a></h2>
+<p>Sentiment Analysis is a way of analyzing some text to determine if it’s positive, negative, or neutral.</p>
+<p>This is the kind of thing that’s pretty easy for a human who understands the language the text is written in, but it can be hard for a computer to really understand the underlying meaning behind the text.</p>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>“I saw that movie.” - Neutral</p></li>
+<li><p>“I love that movie.” - Positive</p></li>
+<li><p>“I hate that movie.” - Negative</p></li>
+</ol>
+</section>
+</section>
+<section id="how-do-we-analyze-sentiment">
+<h2>How do we analyze sentiment?<a class="headerlink" href="#how-do-we-analyze-sentiment" title="Permalink to this heading">#</a></h2>
+<p>We’ll start with some housekeeping first by making sure that our dependencies are ready.</p>
+<p>For this demo, we’ll start out by exploring a more traditional approach that uses the Python Natural Language Toolkit (NLTK) and then we’ll see how our approach might change when we use ChatGPT via the OpenAI SDK instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+
+<span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">openai</span> <span class="n">nltk</span> <span class="n">ipywidgets</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">pywidgets</span>
+
+<span class="kn">from</span> <span class="nn">widgets.simple</span> <span class="kn">import</span> <span class="n">simpleAnalysisWidget</span>
+<span class="kn">from</span> <span class="nn">widgets.config</span> <span class="kn">import</span> <span class="n">modelDropdown</span><span class="p">,</span> <span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span>
+<span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
+
+<span class="n">OPENAI_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">)</span>
+<span class="n">DISPLAY_KEY</span> <span class="o">=</span> <span class="n">obfuscateKey</span><span class="p">(</span><span class="n">OPENAI_API_KEY</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">LookupError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">nltk</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">pywidgets</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">widgets.simple</span> <span class="kn">import</span> <span class="n">simpleAnalysisWidget</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">widgets.config</span> <span class="kn">import</span> <span class="n">modelDropdown</span><span class="p">,</span> <span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
+
+<span class="n">File</span> <span class="o">~/</span><span class="n">work</span><span class="o">/</span><span class="n">sentiment</span><span class="o">-</span><span class="n">analysis</span><span class="o">-</span><span class="n">notebook</span><span class="o">/</span><span class="n">sentiment</span><span class="o">-</span><span class="n">analysis</span><span class="o">-</span><span class="n">notebook</span><span class="o">/</span><span class="n">widgets</span><span class="o">/</span><span class="n">simple</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># instantiate the sentiment analyzer</span>
+<span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1"># analyze the sentiment of a string of text</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">def</span> <span class="nf">analyzeSentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/sentiment/vader.py:340,</span> in <span class="ni">SentimentIntensityAnalyzer.__init__</span><span class="nt">(self, lexicon_file)</span>
+<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="n">lexicon_file</span><span class="o">=</span><span class="s2">&quot;sentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon_file</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">lexicon_file</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_lex_dict</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="bp">self</span><span class="o">.</span><span class="n">constants</span> <span class="o">=</span> <span class="n">VaderConstants</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750,</span> in <span class="ni">load</span><span class="nt">(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">747</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;&lt;Loading </span><span class="si">{</span><span class="n">resource_url</span><span class="si">}</span><span class="s2">&gt;&gt;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="c1"># Load the resource.</span>
+<span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">opened_resource</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">resource_val</span> <span class="o">=</span> <span class="n">opened_resource</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876,</span> in <span class="ni">_open</span><span class="nt">(resource_url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">873</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">path_</span> <span class="o">=</span> <span class="n">split_resource_url</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">876</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="k">elif</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span>     <span class="c1"># urllib might not use mode=&#39;rb&#39;, so handle this one ourselves:</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583,</span> in <span class="ni">find</span><span class="nt">(resource_name, paths)</span>
+<span class="g g-Whitespace">    </span><span class="mi">581</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">70</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">resource_not_found</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">583</span> <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="n">resource_not_found</span><span class="p">)</span>
+
+<span class="ne">LookupError</span>: 
+<span class="o">**********************************************************************</span>
+  <span class="n">Resource</span> <span class="n">vader_lexicon</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span>
+  <span class="n">Please</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">Downloader</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">the</span> <span class="n">resource</span><span class="p">:</span>
+
+  <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">nltk</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
+  
+  <span class="n">For</span> <span class="n">more</span> <span class="n">information</span> <span class="n">see</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
+
+  <span class="n">Attempted</span> <span class="n">to</span> <span class="n">load</span> <span class="n">sentiment</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">zip</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">txt</span>
+
+  <span class="n">Searched</span> <span class="ow">in</span><span class="p">:</span>
+    <span class="o">-</span> <span class="s1">&#39;/home/runner/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/local/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/local/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;&#39;</span>
+<span class="o">**********************************************************************</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simple-sentiment-analysis-with-nltk">
+<h2>Simple sentiment analysis with NLTK<a class="headerlink" href="#simple-sentiment-analysis-with-nltk" title="Permalink to this heading">#</a></h2>
+<p>Let’s take a look at a simple example of sentiment analysis with <code class="docutils literal notranslate"><span class="pre">nltk</span></code> and VADER.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SentimentIntensityAnalyzer</span></code> returns an object with positive, negative, and neutral scores for the given text as well as a combined <code class="docutils literal notranslate"><span class="pre">compound</span></code> score computed from the other three.</p>
+<p>For this basic example, we’re going to rely on the <code class="docutils literal notranslate"><span class="pre">compound</span></code> score and use a naive rating scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the VADER sentiment analyzer</span>
+<span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
+
+<span class="c1"># instantiate the sentiment analyzer</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+
+<span class="c1"># analyze the sentiment of a string of text</span>
+<span class="k">def</span> <span class="nf">analyzeSentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+  <span class="c1"># use VADER to get the +/- sentiment of the string</span>
+  <span class="n">sentiment</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+  <span class="c1"># map the sentiment to a human readable label</span>
+  <span class="k">if</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Very Positive&#39;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.4</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Positive&#39;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Leaning Positive&#39;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.1</span> <span class="ow">and</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Leaning Negative&#39;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.4</span> <span class="ow">and</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Negative&#39;</span><span class="p">)</span>
+  <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Very Negative&#39;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Neutral&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">LookupError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># instantiate the sentiment analyzer</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># analyze the sentiment of a string of text</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">def</span> <span class="nf">analyzeSentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/sentiment/vader.py:340,</span> in <span class="ni">SentimentIntensityAnalyzer.__init__</span><span class="nt">(self, lexicon_file)</span>
+<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">337</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="n">lexicon_file</span><span class="o">=</span><span class="s2">&quot;sentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon_file</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">lexicon_file</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_lex_dict</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="bp">self</span><span class="o">.</span><span class="n">constants</span> <span class="o">=</span> <span class="n">VaderConstants</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750,</span> in <span class="ni">load</span><span class="nt">(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">747</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;&lt;Loading </span><span class="si">{</span><span class="n">resource_url</span><span class="si">}</span><span class="s2">&gt;&gt;&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="c1"># Load the resource.</span>
+<span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">opened_resource</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">resource_val</span> <span class="o">=</span> <span class="n">opened_resource</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876,</span> in <span class="ni">_open</span><span class="nt">(resource_url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">873</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">path_</span> <span class="o">=</span> <span class="n">split_resource_url</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">876</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="k">elif</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span>     <span class="c1"># urllib might not use mode=&#39;rb&#39;, so handle this one ourselves:</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583,</span> in <span class="ni">find</span><span class="nt">(resource_name, paths)</span>
+<span class="g g-Whitespace">    </span><span class="mi">581</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">70</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">resource_not_found</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">583</span> <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="n">resource_not_found</span><span class="p">)</span>
+
+<span class="ne">LookupError</span>: 
+<span class="o">**********************************************************************</span>
+  <span class="n">Resource</span> <span class="n">vader_lexicon</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span>
+  <span class="n">Please</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">Downloader</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">the</span> <span class="n">resource</span><span class="p">:</span>
+
+  <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">nltk</span>
+  <span class="o">&gt;&gt;&gt;</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
+  
+  <span class="n">For</span> <span class="n">more</span> <span class="n">information</span> <span class="n">see</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
+
+  <span class="n">Attempted</span> <span class="n">to</span> <span class="n">load</span> <span class="n">sentiment</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">zip</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">txt</span>
+
+  <span class="n">Searched</span> <span class="ow">in</span><span class="p">:</span>
+    <span class="o">-</span> <span class="s1">&#39;/home/runner/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/local/share/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;/usr/local/lib/nltk_data&#39;</span>
+    <span class="o">-</span> <span class="s1">&#39;&#39;</span>
+<span class="o">**********************************************************************</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s test this analyzer with some example strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># some simple test statements for our analyzer</span>
+<span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s1">&#39;I love that movie.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I hate that movie.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I like that movie.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I dislike that movie.&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;I saw that movie.&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">statement</span> <span class="ow">in</span> <span class="n">statements</span><span class="p">:</span>
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">statement</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">analyzeSentiment</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I love that movie. (Positive)
+I hate that movie. (Negative)
+I like that movie. (Leaning Positive)
+I dislike that movie. (Leaning Negative)
+I saw that movie. (Neutral)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ve wired the input below up to the same analyzer function from above. Type in some text and see how the analyzer responds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this code cell is just used to display a widget</span>
+<span class="c1"># that uses the analyzeSentiment function we created</span>
+<span class="n">display</span><span class="p">(</span><span class="n">simpleAnalysisWidget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "e17a83ecfb16498ebadd64520da26551", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="how-sentiment-analysis-works">
+<h2>How Sentiment Analysis Works<a class="headerlink" href="#how-sentiment-analysis-works" title="Permalink to this heading">#</a></h2>
+<p>Sentiment analysis, like most text analysis involves a multistep process:</p>
+<ol class="arabic simple">
+<li><p><strong>Stemming / Lemmatization</strong>: reduces the words in the text to their root forms to simplify comparison between different forms of the same words</p>
+<ol class="arabic simple">
+<li><p><strong>Stemming</strong>: removes suffixes as an attempt to reduce words to their root forms</p></li>
+<li><p><strong>Lemmatization</strong>: uses a morphological analysis of words to reduce them to their root forms</p></li>
+</ol>
+</li>
+<li><p><strong>Tokenization</strong>: breaks the text into individual units of meaning called tokens</p></li>
+<li><p><strong>Vectorization</strong>: converts the tokens into a id that can be used for comparison</p></li>
+<li><p><strong>Comparison</strong>: compares the tokens to a known set of tokens to determine the sentiment</p></li>
+</ol>
+<p>In this case we’re taking advantage of an existing model that has been trained to analyze sentiment in text. If we wanted to build our own from scratch, it would be a more complicated process and require training data to feed into the model.</p>
+<p>With the advent of Generative Pre-Trained Transformer (GPT) models like those that power ChatGPT, and other transformer models that have exploded in popularity since, we can leverage the powerful inference and predictive capabilities of these models to perform sentiment analysis without having to train our own model, and we can even leverage some prompting techniques to quickly teach the model how to perform more unique analyses.</p>
+</section>
+<section id="how-chatgpt-works">
+<h2>How ChatGPT works<a class="headerlink" href="#how-chatgpt-works" title="Permalink to this heading">#</a></h2>
+<p>Break down how ChatGPT turns text into tokens and then predicts the most likely tokens to follow the given text so far.</p>
+</section>
+<section id="prompt-engineering">
+<h2>Prompt engineering<a class="headerlink" href="#prompt-engineering" title="Permalink to this heading">#</a></h2>
+<p>Describe prompt engineering and break down system, user, and assistant prompts</p>
+</section>
+<section id="zero-shot-and-few-shot-prompting">
+<h2>Zero shot and few shot prompting<a class="headerlink" href="#zero-shot-and-few-shot-prompting" title="Permalink to this heading">#</a></h2>
+<p>Discuss the differences between few show and zero shot and give some examples</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this code cell is just used to display a widget</span>
+<span class="c1"># for us to configure the OpenAI API and to update</span>
+<span class="c1"># your API key if you need to change it</span>
+<span class="n">apiKeyInput</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">obfuscateKey</span><span class="p">(</span><span class="n">OPENAI_API_KEY</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">updateApiKey</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+  <span class="k">global</span> <span class="n">OPENAI_API_KEY</span>
+
+  <span class="c1"># store the updated key in our global variable</span>
+  <span class="n">OPENAI_API_KEY</span> <span class="o">=</span> <span class="n">apiKeyInput</span><span class="o">.</span><span class="n">value</span>
+
+  <span class="c1"># obfuscate the displayed key</span>
+  <span class="n">apiKeyInput</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">obfuscateKey</span><span class="p">(</span><span class="n">OPENAI_API_KEY</span><span class="p">)</span>
+
+
+<span class="n">openAiConfigWidget</span> <span class="o">=</span> <span class="n">pywidgets</span><span class="o">.</span><span class="n">Box</span><span class="p">([</span><span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span><span class="p">,</span> <span class="n">modelDropdown</span><span class="p">],</span> <span class="n">layout</span><span class="o">=</span><span class="n">pywidgets</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span><span class="n">display</span><span class="o">=</span><span class="s1">&#39;flex&#39;</span><span class="p">,</span> <span class="n">flex_direction</span><span class="o">=</span><span class="s1">&#39;column&#39;</span><span class="p">,</span> <span class="n">align_items</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;100%&#39;</span><span class="p">))</span>
+
+<span class="n">apiKeyUpdateButton</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">updateApiKey</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">openAiConfigWidget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "90ae52bc9f1b4a9ea5f431c3cae13a4e", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># def get_completion(prompt, model=model.value):</span>
+<span class="c1">#     messages = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]</span>
+
+<span class="c1">#     response = openai.ChatCompletion.create(</span>
+<span class="c1">#         model=model,</span>
+<span class="c1">#         messages=messages,</span>
+<span class="c1">#         temperature=0, # this is the degree of randomness of the model&#39;s output</span>
+<span class="c1">#     )</span>
+
+<span class="c1">#     return response.choices[0].message[&quot;content&quot;]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Sentiment Analysis with ChatGPT Workshop</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-sentiment-analysis">What is sentiment analysis?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-analyze-sentiment">How do we analyze sentiment?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-sentiment-analysis-with-nltk">Simple sentiment analysis with NLTK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sentiment-analysis-works">How Sentiment Analysis Works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-chatgpt-works">How ChatGPT works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prompt-engineering">Prompt engineering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot-and-few-shot-prompting">Zero shot and few shot prompting</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

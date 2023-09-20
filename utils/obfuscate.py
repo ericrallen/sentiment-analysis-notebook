@@ -1,5 +1,8 @@
 # we'll use this to obfuscate the API key before displaying it
 def obfuscateKey(key):
+  if not key:
+    return ''
+
   buffer = 4
 
   if len(key) < buffer:

@@ -1,4 +1,5 @@
 ipywidgets
 jupyter
+jupyter-book
 nltk
 openai

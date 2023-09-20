@@ -373,73 +373,20 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">LookupError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">nltk</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">pywidgets</span>
-<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">widgets.simple</span> <span class="kn">import</span> <span class="n">simpleAnalysisWidget</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">widgets.config</span> <span class="kn">import</span> <span class="n">modelDropdown</span><span class="p">,</span> <span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">15</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">OPENAI_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">DISPLAY_KEY</span> <span class="o">=</span> <span class="n">obfuscateKey</span><span class="p">(</span><span class="n">OPENAI_API_KEY</span><span class="p">)</span>
 
-<span class="n">File</span> <span class="o">~/</span><span class="n">work</span><span class="o">/</span><span class="n">sentiment</span><span class="o">-</span><span class="n">analysis</span><span class="o">-</span><span class="n">notebook</span><span class="o">/</span><span class="n">sentiment</span><span class="o">-</span><span class="n">analysis</span><span class="o">-</span><span class="n">notebook</span><span class="o">/</span><span class="n">widgets</span><span class="o">/</span><span class="n">simple</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># instantiate the sentiment analyzer</span>
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="c1"># analyze the sentiment of a string of text</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">def</span> <span class="nf">analyzeSentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<span class="nn">File ~/work/sentiment-analysis-notebook/sentiment-analysis-notebook/utils/obfuscate.py:5,</span> in <span class="ni">obfuscateKey</span><span class="nt">(key)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">def</span> <span class="nf">obfuscateKey</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>   <span class="n">buffer</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="ne">----&gt; </span><span class="mi">5</span>   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">buffer</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">buffer</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>   <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/sentiment/vader.py:340,</span> in <span class="ni">SentimentIntensityAnalyzer.__init__</span><span class="nt">(self, lexicon_file)</span>
-<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">337</span>     <span class="bp">self</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="n">lexicon_file</span><span class="o">=</span><span class="s2">&quot;sentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon_file</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">lexicon_file</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_lex_dict</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="bp">self</span><span class="o">.</span><span class="n">constants</span> <span class="o">=</span> <span class="n">VaderConstants</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750,</span> in <span class="ni">load</span><span class="nt">(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">747</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;&lt;Loading </span><span class="si">{</span><span class="n">resource_url</span><span class="si">}</span><span class="s2">&gt;&gt;&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="c1"># Load the resource.</span>
-<span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">opened_resource</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">resource_val</span> <span class="o">=</span> <span class="n">opened_resource</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876,</span> in <span class="ni">_open</span><span class="nt">(resource_url)</span>
-<span class="g g-Whitespace">    </span><span class="mi">873</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">path_</span> <span class="o">=</span> <span class="n">split_resource_url</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">876</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="k">elif</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">878</span>     <span class="c1"># urllib might not use mode=&#39;rb&#39;, so handle this one ourselves:</span>
-<span class="g g-Whitespace">    </span><span class="mi">879</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583,</span> in <span class="ni">find</span><span class="nt">(resource_name, paths)</span>
-<span class="g g-Whitespace">    </span><span class="mi">581</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">70</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">resource_not_found</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">583</span> <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="n">resource_not_found</span><span class="p">)</span>
-
-<span class="ne">LookupError</span>: 
-<span class="o">**********************************************************************</span>
-  <span class="n">Resource</span> <span class="n">vader_lexicon</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span>
-  <span class="n">Please</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">Downloader</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">the</span> <span class="n">resource</span><span class="p">:</span>
-
-  <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">nltk</span>
-  <span class="o">&gt;&gt;&gt;</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
-  
-  <span class="n">For</span> <span class="n">more</span> <span class="n">information</span> <span class="n">see</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
-
-  <span class="n">Attempted</span> <span class="n">to</span> <span class="n">load</span> <span class="n">sentiment</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">zip</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">txt</span>
-
-  <span class="n">Searched</span> <span class="ow">in</span><span class="p">:</span>
-    <span class="o">-</span> <span class="s1">&#39;/home/runner/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;&#39;</span>
-<span class="o">**********************************************************************</span>
+<span class="ne">TypeError</span>: object of type &#39;NoneType&#39; has no len()
 </pre></div>
 </div>
 </div>
@@ -484,71 +431,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">LookupError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># instantiate the sentiment analyzer</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="c1"># analyze the sentiment of a string of text</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">def</span> <span class="nf">analyzeSentiment</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/sentiment/vader.py:340,</span> in <span class="ni">SentimentIntensityAnalyzer.__init__</span><span class="nt">(self, lexicon_file)</span>
-<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">337</span>     <span class="bp">self</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">338</span>     <span class="n">lexicon_file</span><span class="o">=</span><span class="s2">&quot;sentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">339</span> <span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">340</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon_file</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">lexicon_file</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lexicon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_lex_dict</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">342</span>     <span class="bp">self</span><span class="o">.</span><span class="n">constants</span> <span class="o">=</span> <span class="n">VaderConstants</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750,</span> in <span class="ni">load</span><span class="nt">(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">747</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;&lt;Loading </span><span class="si">{</span><span class="n">resource_url</span><span class="si">}</span><span class="s2">&gt;&gt;&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="c1"># Load the resource.</span>
-<span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">opened_resource</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">753</span>     <span class="n">resource_val</span> <span class="o">=</span> <span class="n">opened_resource</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876,</span> in <span class="ni">_open</span><span class="nt">(resource_url)</span>
-<span class="g g-Whitespace">    </span><span class="mi">873</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">path_</span> <span class="o">=</span> <span class="n">split_resource_url</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">876</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="k">elif</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">878</span>     <span class="c1"># urllib might not use mode=&#39;rb&#39;, so handle this one ourselves:</span>
-<span class="g g-Whitespace">    </span><span class="mi">879</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583,</span> in <span class="ni">find</span><span class="nt">(resource_name, paths)</span>
-<span class="g g-Whitespace">    </span><span class="mi">581</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">70</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">resource_not_found</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">583</span> <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="n">resource_not_found</span><span class="p">)</span>
-
-<span class="ne">LookupError</span>: 
-<span class="o">**********************************************************************</span>
-  <span class="n">Resource</span> <span class="n">vader_lexicon</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span>
-  <span class="n">Please</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">Downloader</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">the</span> <span class="n">resource</span><span class="p">:</span>
-
-  <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">nltk</span>
-  <span class="o">&gt;&gt;&gt;</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
-  
-  <span class="n">For</span> <span class="n">more</span> <span class="n">information</span> <span class="n">see</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
-
-  <span class="n">Attempted</span> <span class="n">to</span> <span class="n">load</span> <span class="n">sentiment</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">zip</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">/</span><span class="n">vader_lexicon</span><span class="o">.</span><span class="n">txt</span>
-
-  <span class="n">Searched</span> <span class="ow">in</span><span class="p">:</span>
-    <span class="o">-</span> <span class="s1">&#39;/home/runner/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;&#39;</span>
-<span class="o">**********************************************************************</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>Now let’s test this analyzer with some example strings.</p>
 <div class="cell docutils container">
@@ -587,7 +469,7 @@ I saw that movie. (Neutral)
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "e17a83ecfb16498ebadd64520da26551", "version_major": 2, "version_minor": 0}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "e95819a62c074d958422e446f4ee9f76"}</script></div>
 </div>
 </section>
 <section id="how-sentiment-analysis-works">
@@ -644,7 +526,27 @@ I saw that movie. (Neutral)
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "90ae52bc9f1b4a9ea5f431c3cae13a4e", "version_major": 2, "version_minor": 0}</script></div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># this code cell is just used to display a widget</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># for us to configure the OpenAI API and to update</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># your API key if you need to change it</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">apiKeyInput</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">obfuscateKey</span><span class="p">(</span><span class="n">OPENAI_API_KEY</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="k">def</span> <span class="nf">updateApiKey</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>   <span class="k">global</span> <span class="n">OPENAI_API_KEY</span>
+
+<span class="nn">File ~/work/sentiment-analysis-notebook/sentiment-analysis-notebook/utils/obfuscate.py:5,</span> in <span class="ni">obfuscateKey</span><span class="nt">(key)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">def</span> <span class="nf">obfuscateKey</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>   <span class="n">buffer</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="ne">----&gt; </span><span class="mi">5</span>   <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">buffer</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">buffer</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>   <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+
+<span class="ne">TypeError</span>: object of type &#39;NoneType&#39; has no len()
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

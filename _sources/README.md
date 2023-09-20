@@ -4,9 +4,7 @@ In this interactive workshop powered by a Jupyter Notebook, we'll explore the ba
 
 ## Interactive Notebook
 
-You can find this notebook deployed to [GitHub Pages](/)
-
-**TODO**: Add link to GitHub pages deployment - and deploy to GitHub pages
+This [workshop notebook](https://ericrallen.github.io/sentiment-analysis-notebook/) is available on GitHub Pages so you can run it in your browser without installing anything locally.
 
 ## Pre-requisites
 

@@ -18,98 +18,45 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# import the VADER sentiment analyzer
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
+# this code cell is just used to display a widget
+# for us to configure the OpenAI API and to update
+# your API key if you need to change it
+apiKeyInput.value = obfuscateKey(OPENAI_API_KEY)
 
-# instantiate the sentiment analyzer
-analyzer = SentimentIntensityAnalyzer()
+def updateApiKey(event):
+  global OPENAI_API_KEY
 
-# analyze the sentiment of a string of text
-def analyzeSentiment(text):
-  if not text:
-    return('')
+  # store the updated key in our global variable
+  OPENAI_API_KEY = apiKeyInput.value
 
-  # use VADER to get the +/- sentiment of the string
-  sentiment = analyzer.polarity_scores(text)
+  # obfuscate the displayed key
+  apiKeyInput.value = obfuscateKey(OPENAI_API_KEY)
 
-  # map the sentiment to a human readable label
-  if sentiment['compound'] >= 0.75:
-    return('Very Positive')
-  elif sentiment['compound'] >= 0.4:
-    return('Positive')
-  elif sentiment['compound'] >= 0.1:
-    return('Leaning Positive')
-  elif sentiment['compound'] <= -0.1 and sentiment['compound'] > -0.4:
-    return('Leaning Negative')
-  elif sentiment['compound'] <= -0.4 and sentiment['compound'] > -0.75:
-    return('Negative')
-  elif sentiment['compound'] <= -0.75:
-    return('Very Negative')
-  else:
-    return('Neutral')
+
+openAiConfigWidget = pywidgets.Box([apiKeyInput, apiKeyUpdateButton, modelDropdown], layout=pywidgets.Layout(display='flex', flex_direction='column', align_items='center', width='100%'))
+
+apiKeyUpdateButton.on_click(updateApiKey)
+
+display(openAiConfigWidget)
 ------------------
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mLookupError[0m                               Traceback (most recent call last)
-Cell [0;32mIn[2], line 5[0m
-[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mnltk[39;00m[38;5;21;01m.[39;00m[38;5;21;01msentiment[39;00m[38;5;21;01m.[39;00m[38;5;21;01mvader[39;00m [38;5;28;01mimport[39;00m SentimentIntensityAnalyzer
-[1;32m      4[0m [38;5;66;03m# instantiate the sentiment analyzer[39;00m
-[0;32m----> 5[0m analyzer [38;5;241m=[39m [43mSentimentIntensityAnalyzer[49m[43m([49m[43m)[49m
-[1;32m      7[0m [38;5;66;03m# analyze the sentiment of a string of text[39;00m
-[1;32m      8[0m [38;5;28;01mdef[39;00m [38;5;21manalyzeSentiment[39m(text):
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[5], line 4[0m
+[1;32m      1[0m [38;5;66;03m# this code cell is just used to display a widget[39;00m
+[1;32m      2[0m [38;5;66;03m# for us to configure the OpenAI API and to update[39;00m
+[1;32m      3[0m [38;5;66;03m# your API key if you need to change it[39;00m
+[0;32m----> 4[0m apiKeyInput[38;5;241m.[39mvalue [38;5;241m=[39m [43mobfuscateKey[49m[43m([49m[43mOPENAI_API_KEY[49m[43m)[49m
+[1;32m      6[0m [38;5;28;01mdef[39;00m [38;5;21mupdateApiKey[39m(event):
+[1;32m      7[0m   [38;5;28;01mglobal[39;00m OPENAI_API_KEY
 
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/sentiment/vader.py:340[0m, in [0;36mSentimentIntensityAnalyzer.__init__[0;34m(self, lexicon_file)[0m
-[1;32m    336[0m [38;5;28;01mdef[39;00m [38;5;21m__init__[39m(
-[1;32m    337[0m     [38;5;28mself[39m,
-[1;32m    338[0m     lexicon_file[38;5;241m=[39m[38;5;124m"[39m[38;5;124msentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt[39m[38;5;124m"[39m,
-[1;32m    339[0m ):
-[0;32m--> 340[0m     [38;5;28mself[39m[38;5;241m.[39mlexicon_file [38;5;241m=[39m [43mnltk[49m[38;5;241;43m.[39;49m[43mdata[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43mlexicon_file[49m[43m)[49m
-[1;32m    341[0m     [38;5;28mself[39m[38;5;241m.[39mlexicon [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mmake_lex_dict()
-[1;32m    342[0m     [38;5;28mself[39m[38;5;241m.[39mconstants [38;5;241m=[39m VaderConstants()
+File [0;32m~/work/sentiment-analysis-notebook/sentiment-analysis-notebook/utils/obfuscate.py:5[0m, in [0;36mobfuscateKey[0;34m(key)[0m
+[1;32m      2[0m [38;5;28;01mdef[39;00m [38;5;21mobfuscateKey[39m(key):
+[1;32m      3[0m   buffer [38;5;241m=[39m [38;5;241m4[39m
+[0;32m----> 5[0m   [38;5;28;01mif[39;00m [38;5;28;43mlen[39;49m[43m([49m[43mkey[49m[43m)[49m [38;5;241m<[39m buffer:
+[1;32m      6[0m     buffer [38;5;241m=[39m [38;5;241m1[39m
+[1;32m      7[0m   [38;5;28;01melif[39;00m [38;5;28mlen[39m(key) [38;5;241m<[39m [38;5;241m8[39m:
 
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750[0m, in [0;36mload[0;34m(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)[0m
-[1;32m    747[0m     [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124m<<Loading [39m[38;5;132;01m{[39;00mresource_url[38;5;132;01m}[39;00m[38;5;124m>>[39m[38;5;124m"[39m)
-[1;32m    749[0m [38;5;66;03m# Load the resource.[39;00m
-[0;32m--> 750[0m opened_resource [38;5;241m=[39m [43m_open[49m[43m([49m[43mresource_url[49m[43m)[49m
-[1;32m    752[0m [38;5;28;01mif[39;00m [38;5;28mformat[39m [38;5;241m==[39m [38;5;124m"[39m[38;5;124mraw[39m[38;5;124m"[39m:
-[1;32m    753[0m     resource_val [38;5;241m=[39m opened_resource[38;5;241m.[39mread()
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876[0m, in [0;36m_open[0;34m(resource_url)[0m
-[1;32m    873[0m protocol, path_ [38;5;241m=[39m split_resource_url(resource_url)
-[1;32m    875[0m [38;5;28;01mif[39;00m protocol [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mor[39;00m protocol[38;5;241m.[39mlower() [38;5;241m==[39m [38;5;124m"[39m[38;5;124mnltk[39m[38;5;124m"[39m:
-[0;32m--> 876[0m     [38;5;28;01mreturn[39;00m [43mfind[49m[43m([49m[43mpath_[49m[43m,[49m[43m [49m[43mpath[49m[43m [49m[38;5;241;43m+[39;49m[43m [49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m][49m[43m)[49m[38;5;241m.[39mopen()
-[1;32m    877[0m [38;5;28;01melif[39;00m protocol[38;5;241m.[39mlower() [38;5;241m==[39m [38;5;124m"[39m[38;5;124mfile[39m[38;5;124m"[39m:
-[1;32m    878[0m     [38;5;66;03m# urllib might not use mode='rb', so handle this one ourselves:[39;00m
-[1;32m    879[0m     [38;5;28;01mreturn[39;00m find(path_, [[38;5;124m"[39m[38;5;124m"[39m])[38;5;241m.[39mopen()
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583[0m, in [0;36mfind[0;34m(resource_name, paths)[0m
-[1;32m    581[0m sep [38;5;241m=[39m [38;5;124m"[39m[38;5;124m*[39m[38;5;124m"[39m [38;5;241m*[39m [38;5;241m70[39m
-[1;32m    582[0m resource_not_found [38;5;241m=[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00msep[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00mmsg[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00msep[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;124m"[39m
-[0;32m--> 583[0m [38;5;28;01mraise[39;00m [38;5;167;01mLookupError[39;00m(resource_not_found)
-
-[0;31mLookupError[0m: 
-**********************************************************************
-  Resource [93mvader_lexicon[0m not found.
-  Please use the NLTK Downloader to obtain the resource:
-
-  [31m>>> import nltk
-  >>> nltk.download('vader_lexicon')
-  [0m
-  For more information see: https://www.nltk.org/data.html
-
-  Attempted to load [93msentiment/vader_lexicon.zip/vader_lexicon/vader_lexicon.txt[0m
-
-  Searched in:
-    - '/home/runner/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data'
-    - '/usr/share/nltk_data'
-    - '/usr/local/share/nltk_data'
-    - '/usr/lib/nltk_data'
-    - '/usr/local/lib/nltk_data'
-    - ''
-**********************************************************************
-
+[0;31mTypeError[0m: object of type 'NoneType' has no len()
 

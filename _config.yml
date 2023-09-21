@@ -1,3 +1,10 @@
+# In _config.yml
+title: Sentiment Analysis
+author: Eric Allen
+
+execute:
+  execute_notebooks: force
+
 repository:
   url: https://github.com/ericrallen/sentiment-analysis-notebook
   branch: main

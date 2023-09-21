@@ -4,3 +4,5 @@ jupyter-book
 nltk
 openai
 numpy
+requests-cache
+backoff

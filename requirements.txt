@@ -1,8 +1,10 @@
+backoff
 ipywidgets
 jupyter
 jupyter-book
 nltk
-openai
+nrclex
 numpy
+openai
 requests-cache
-backoff
+tiktoken

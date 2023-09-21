@@ -1,11 +1,11 @@
 import ipywidgets as widgets
 
-# import the VADER sentiment analyzer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from nrclex import NRCLex
 
 import openai
 
-# instantiate the sentiment analyzer
+
 analyzer = SentimentIntensityAnalyzer()
 
 ADVANCED_SYSTEM_PROMPT = """
@@ -21,12 +21,15 @@ Only return the output from the final step to the user.
 """
 
 OPEN_AI_MODEL = 'gpt-3.5-turbo'
+TEMPERATURE = 0.2
 
-def configureOpenAi(key, model):
+def configureOpenAi(key, model, temp):
   global OPEN_AI_MODEL
+  global TEMPERATURE
 
   openai.api_key = key
   OPEN_AI_MODEL = model
+  TEMPERATURE = temp
 
 
 def advancedChatGptSentiment(prompt):
@@ -68,19 +71,33 @@ def analyzeBasicSentiment(text):
     return('Neutral')
 
 
+def getNRCEmotion(text):
+  emotion = NRCLex(text)
+
+  return emotion.top_emotions
+
+
 def getAdvancedSentiment(event):
   text = advancedDemoString.value.strip()
 
   # Get the sentiment
   sentiment = analyzeBasicSentiment(text)
+  emotions = getNRCEmotion(text)
   openAiSentiment = advancedChatGptSentiment(text)
 
   if sentiment:
     with basicAnalysis:
       basicAnalysis.clear_output(wait=True)
-      print(f"NLTK: {sentiment}")
+      print(f"VADER: {sentiment}")
   else:
     basicAnalysis.clear_output()
+
+  if emotions:
+    with nrcLexAnalysis:
+      nrcLexAnalysis.clear_output(wait=True)
+      print(f"NRC: {emotions}")
+  else:
+    nrcLexAnalysis.clear_output()
 
   if openAiSentiment:
     with advancedAnalysis:
@@ -90,8 +107,9 @@ def getAdvancedSentiment(event):
     advancedAnalysis.clear_output()
 
 
-basicAnalysis = widgets.Output(layout=widgets.Layout(margin_left='10px'))
-advancedAnalysis = widgets.Output(layout=widgets.Layout(margin_left='10px'))
+basicAnalysis = widgets.Output()
+nrcLexAnalysis = widgets.Output()
+advancedAnalysis = widgets.Output()
 
 advancedAnalysisButton = widgets.Button(
   description='Analyze',
@@ -106,6 +124,6 @@ advancedDemoString = widgets.Text(
 advancedAnalysisButton.on_click(getAdvancedSentiment)
 
 advancedAnalysisInput = widgets.HBox([advancedDemoString, advancedAnalysisButton])
-advancedAnalysisOutput = widgets.VBox([basicAnalysis, advancedAnalysis])
+advancedAnalysisOutput = widgets.VBox([basicAnalysis, nrcLexAnalysis, advancedAnalysis])
 
 advancedAnalysisWidget = widgets.VBox([advancedAnalysisInput, advancedAnalysisOutput])

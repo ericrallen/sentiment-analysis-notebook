@@ -1,4 +1,2 @@
 format: jb-book
-root: README
-chapters:
-  - file: SentimentAnalysisWorkshop
+root: SentimentAnalysisWorkshop

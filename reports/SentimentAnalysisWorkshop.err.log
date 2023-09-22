@@ -18,183 +18,44 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-from nrclex import NRCLex
+# this cell focuses on some implemetation details for this notebook
+# that aren't actually important to the workshop
+import ipywidgets as pywidgets
+import requests as request
+import requests_cache
+import backoff
 
-def getNRCEmotion(text):
-  emotion = NRCLex(text)
+import plotly.express as px
+import plotly.io as pio
 
-  return emotion.top_emotions
+# configuration widgets
+from widgets.config import modelDropdown, apiKeyInput, apiKeyUpdateButton, temperatureSlider, sampleSizeSlider, sampleSizeWarningLabel, openAiHeader, hackerNewsHeader
 
-for storyId, story in stories.items():
-  emotion = getNRCEmotion(story['title'])
+# project-specific widgets
+from widgets.simple import simpleAnalysisWidget
+from widgets.advanced import advancedAnalysisWidget, configureOpenAi
+from widgets.tokens import tokenAnalysisWidget, configureModel
 
-  story['sentiment']['nrclex'] = emotion
+# project-specific utilities
+from utils.obfuscate import obfuscateKey
 
-  print(f"{story['title']}\nVADER: {story['sentiment']['vader']}\nNRC: {emotion}\n---")
+pio.templates.default = "plotly_white"
+pio.renderers.default = "notebook"
+
+# we'll use this session to cache our hacker news api requests
+REQUEST_CACHE_EXPIRATION_SECONDS = 60 * 15
+session = requests_cache.CachedSession('hackernews_cache', expire_after=REQUEST_CACHE_EXPIRATION_SECONDS)
 ------------------
 
------ stdout -----
-
-**********************************************************************
-  Resource [93mpunkt[0m not found.
-  Please use the NLTK Downloader to obtain the resource:
-
-  [31m>>> import nltk
-  >>> nltk.download('punkt')
-  [0m
-  For more information see: https://www.nltk.org/data.html
-
-  Attempted to load [93mtokenizers/punkt/PY3/english.pickle[0m
-
-  Searched in:
-    - '/home/runner/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data'
-    - '/usr/share/nltk_data'
-    - '/usr/local/share/nltk_data'
-    - '/usr/lib/nltk_data'
-    - '/usr/local/lib/nltk_data'
-    - ''
-**********************************************************************
-------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mLookupError[0m                               Traceback (most recent call last)
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:35[0m, in [0;36mrequires_nltk_corpus.<locals>.decorated[0;34m(*args, **kwargs)[0m
-[1;32m     34[0m [38;5;28;01mtry[39;00m:
-[0;32m---> 35[0m     [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-[1;32m     36[0m [38;5;28;01mexcept[39;00m [38;5;167;01mLookupError[39;00m [38;5;28;01mas[39;00m err:
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [0;32mIn[3], line 8[0m
+[1;32m      5[0m [38;5;28;01mimport[39;00m [38;5;21;01mrequests_cache[39;00m
+[1;32m      6[0m [38;5;28;01mimport[39;00m [38;5;21;01mbackoff[39;00m
+[0;32m----> 8[0m [38;5;28;01mimport[39;00m [38;5;21;01mplotly[39;00m[38;5;21;01m.[39;00m[38;5;21;01mexpress[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpx[39;00m
+[1;32m      9[0m [38;5;28;01mimport[39;00m [38;5;21;01mplotly[39;00m[38;5;21;01m.[39;00m[38;5;21;01mio[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpio[39;00m
+[1;32m     11[0m [38;5;66;03m# configuration widgets[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/tokenizers.py:57[0m, in [0;36mSentenceTokenizer.tokenize[0;34m(self, text)[0m
-[1;32m     56[0m [38;5;250m[39m[38;5;124;03m'''Return a list of sentences.'''[39;00m
-[0;32m---> 57[0m [38;5;28;01mreturn[39;00m [43mnltk[49m[38;5;241;43m.[39;49m[43mtokenize[49m[38;5;241;43m.[39;49m[43msent_tokenize[49m[43m([49m[43mtext[49m[43m)[49m
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/tokenize/__init__.py:106[0m, in [0;36msent_tokenize[0;34m(text, language)[0m
-[1;32m     97[0m [38;5;250m[39m[38;5;124;03m"""[39;00m
-[1;32m     98[0m [38;5;124;03mReturn a sentence-tokenized copy of *text*,[39;00m
-[1;32m     99[0m [38;5;124;03musing NLTK's recommended sentence tokenizer[39;00m
-[0;32m   (...)[0m
-[1;32m    104[0m [38;5;124;03m:param language: the model name in the Punkt corpus[39;00m
-[1;32m    105[0m [38;5;124;03m"""[39;00m
-[0;32m--> 106[0m tokenizer [38;5;241m=[39m [43mload[49m[43m([49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mtokenizers/punkt/[39;49m[38;5;132;43;01m{[39;49;00m[43mlanguage[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.pickle[39;49m[38;5;124;43m"[39;49m[43m)[49m
-[1;32m    107[0m [38;5;28;01mreturn[39;00m tokenizer[38;5;241m.[39mtokenize(text)
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750[0m, in [0;36mload[0;34m(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)[0m
-[1;32m    749[0m [38;5;66;03m# Load the resource.[39;00m
-[0;32m--> 750[0m opened_resource [38;5;241m=[39m [43m_open[49m[43m([49m[43mresource_url[49m[43m)[49m
-[1;32m    752[0m [38;5;28;01mif[39;00m [38;5;28mformat[39m [38;5;241m==[39m [38;5;124m"[39m[38;5;124mraw[39m[38;5;124m"[39m:
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876[0m, in [0;36m_open[0;34m(resource_url)[0m
-[1;32m    875[0m [38;5;28;01mif[39;00m protocol [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mor[39;00m protocol[38;5;241m.[39mlower() [38;5;241m==[39m [38;5;124m"[39m[38;5;124mnltk[39m[38;5;124m"[39m:
-[0;32m--> 876[0m     [38;5;28;01mreturn[39;00m [43mfind[49m[43m([49m[43mpath_[49m[43m,[49m[43m [49m[43mpath[49m[43m [49m[38;5;241;43m+[39;49m[43m [49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m][49m[43m)[49m[38;5;241m.[39mopen()
-[1;32m    877[0m [38;5;28;01melif[39;00m protocol[38;5;241m.[39mlower() [38;5;241m==[39m [38;5;124m"[39m[38;5;124mfile[39m[38;5;124m"[39m:
-[1;32m    878[0m     [38;5;66;03m# urllib might not use mode='rb', so handle this one ourselves:[39;00m
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583[0m, in [0;36mfind[0;34m(resource_name, paths)[0m
-[1;32m    582[0m resource_not_found [38;5;241m=[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00msep[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00mmsg[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;132;01m{[39;00msep[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;124m"[39m
-[0;32m--> 583[0m [38;5;28;01mraise[39;00m [38;5;167;01mLookupError[39;00m(resource_not_found)
-
-[0;31mLookupError[0m: 
-**********************************************************************
-  Resource [93mpunkt[0m not found.
-  Please use the NLTK Downloader to obtain the resource:
-
-  [31m>>> import nltk
-  >>> nltk.download('punkt')
-  [0m
-  For more information see: https://www.nltk.org/data.html
-
-  Attempted to load [93mtokenizers/punkt/PY3/english.pickle[0m
-
-  Searched in:
-    - '/home/runner/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data'
-    - '/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data'
-    - '/usr/share/nltk_data'
-    - '/usr/local/share/nltk_data'
-    - '/usr/lib/nltk_data'
-    - '/usr/local/lib/nltk_data'
-    - ''
-**********************************************************************
-
-
-During handling of the above exception, another exception occurred:
-
-[0;31mMissingCorpusError[0m                        Traceback (most recent call last)
-Cell [0;32mIn[12], line 9[0m
-[1;32m      6[0m   [38;5;28;01mreturn[39;00m emotion[38;5;241m.[39mtop_emotions
-[1;32m      8[0m [38;5;28;01mfor[39;00m storyId, story [38;5;129;01min[39;00m stories[38;5;241m.[39mitems():
-[0;32m----> 9[0m   emotion [38;5;241m=[39m [43mgetNRCEmotion[49m[43m([49m[43mstory[49m[43m[[49m[38;5;124;43m'[39;49m[38;5;124;43mtitle[39;49m[38;5;124;43m'[39;49m[43m][49m[43m)[49m
-[1;32m     11[0m   story[[38;5;124m'[39m[38;5;124msentiment[39m[38;5;124m'[39m][[38;5;124m'[39m[38;5;124mnrclex[39m[38;5;124m'[39m] [38;5;241m=[39m emotion
-[1;32m     13[0m   [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;132;01m{[39;00mstory[[38;5;124m'[39m[38;5;124mtitle[39m[38;5;124m'[39m][38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;124mVADER: [39m[38;5;132;01m{[39;00mstory[[38;5;124m'[39m[38;5;124msentiment[39m[38;5;124m'[39m][[38;5;124m'[39m[38;5;124mvader[39m[38;5;124m'[39m][38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;124mNRC: [39m[38;5;132;01m{[39;00memotion[38;5;132;01m}[39;00m[38;5;130;01m\n[39;00m[38;5;124m---[39m[38;5;124m"[39m)
-
-Cell [0;32mIn[12], line 4[0m, in [0;36mgetNRCEmotion[0;34m(text)[0m
-[1;32m      3[0m [38;5;28;01mdef[39;00m [38;5;21mgetNRCEmotion[39m(text):
-[0;32m----> 4[0m   emotion [38;5;241m=[39m [43mNRCLex[49m[43m([49m[43mtext[49m[43m)[49m
-[1;32m      6[0m   [38;5;28;01mreturn[39;00m emotion[38;5;241m.[39mtop_emotions
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nrclex.py:2873[0m, in [0;36mNRCLex.__init__[0;34m(self, text)[0m
-[1;32m   2871[0m [38;5;28mself[39m[38;5;241m.[39mtext [38;5;241m=[39m text
-[1;32m   2872[0m blob [38;5;241m=[39m TextBlob(text)
-[0;32m-> 2873[0m [38;5;28mself[39m[38;5;241m.[39mwords [38;5;241m=[39m [38;5;28mlist[39m([43mblob[49m[38;5;241;43m.[39;49m[43mwords[49m)
-[1;32m   2874[0m [38;5;28mself[39m[38;5;241m.[39msentences [38;5;241m=[39m [38;5;28mlist[39m(blob[38;5;241m.[39msentences)
-[1;32m   2875[0m build_word_affect([38;5;28mself[39m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:24[0m, in [0;36mcached_property.__get__[0;34m(self, obj, cls)[0m
-[1;32m     22[0m [38;5;28;01mif[39;00m obj [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-[1;32m     23[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m
-[0;32m---> 24[0m value [38;5;241m=[39m obj[38;5;241m.[39m[38;5;18m__dict__[39m[[38;5;28mself[39m[38;5;241m.[39mfunc[38;5;241m.[39m[38;5;18m__name__[39m] [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mfunc[49m[43m([49m[43mobj[49m[43m)[49m
-[1;32m     25[0m [38;5;28;01mreturn[39;00m value
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/blob.py:678[0m, in [0;36mTextBlob.words[0;34m(self)[0m
-[1;32m    670[0m [38;5;129m@cached_property[39m
-[1;32m    671[0m [38;5;28;01mdef[39;00m [38;5;21mwords[39m([38;5;28mself[39m):
-[1;32m    672[0m [38;5;250m    [39m[38;5;124;03m"""Return a list of word tokens. This excludes punctuation characters.[39;00m
-[1;32m    673[0m [38;5;124;03m    If you want to include punctuation characters, access the ``tokens``[39;00m
-[1;32m    674[0m [38;5;124;03m    property.[39;00m
-[1;32m    675[0m 
-[1;32m    676[0m [38;5;124;03m    :returns: A :class:`WordList <WordList>` of word tokens.[39;00m
-[1;32m    677[0m [38;5;124;03m    """[39;00m
-[0;32m--> 678[0m     [38;5;28;01mreturn[39;00m WordList([43mword_tokenize[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mraw[49m[43m,[49m[43m [49m[43minclude_punc[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m)[49m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/tokenizers.py:73[0m, in [0;36mword_tokenize[0;34m(text, include_punc, *args, **kwargs)[0m
-[1;32m     64[0m [38;5;28;01mdef[39;00m [38;5;21mword_tokenize[39m(text, include_punc[38;5;241m=[39m[38;5;28;01mTrue[39;00m, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-[1;32m     65[0m [38;5;250m    [39m[38;5;124;03m"""Convenience function for tokenizing text into words.[39;00m
-[1;32m     66[0m 
-[1;32m     67[0m [38;5;124;03m    NOTE: NLTK's word tokenizer expects sentences as input, so the text will be[39;00m
-[1;32m     68[0m [38;5;124;03m    tokenized to sentences before being tokenized to words.[39;00m
-[1;32m     69[0m [38;5;124;03m    """[39;00m
-[1;32m     70[0m     words [38;5;241m=[39m chain[38;5;241m.[39mfrom_iterable(
-[1;32m     71[0m         _word_tokenizer[38;5;241m.[39mitokenize(sentence, include_punc[38;5;241m=[39minclude_punc,
-[1;32m     72[0m                                 [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
-[0;32m---> 73[0m         [38;5;28;01mfor[39;00m sentence [38;5;129;01min[39;00m [43msent_tokenize[49m[43m([49m[43mtext[49m[43m)[49m)
-[1;32m     74[0m     [38;5;28;01mreturn[39;00m words
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/base.py:64[0m, in [0;36mBaseTokenizer.itokenize[0;34m(self, text, *args, **kwargs)[0m
-[1;32m     57[0m [38;5;28;01mdef[39;00m [38;5;21mitokenize[39m([38;5;28mself[39m, text, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-[1;32m     58[0m [38;5;250m    [39m[38;5;124;03m"""Return a generator that generates tokens "on-demand".[39;00m
-[1;32m     59[0m 
-[1;32m     60[0m [38;5;124;03m    .. versionadded:: 0.6.0[39;00m
-[1;32m     61[0m 
-[1;32m     62[0m [38;5;124;03m    :rtype: generator[39;00m
-[1;32m     63[0m [38;5;124;03m    """[39;00m
-[0;32m---> 64[0m     [38;5;28;01mreturn[39;00m (t [38;5;28;01mfor[39;00m t [38;5;129;01min[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtokenize[49m[43m([49m[43mtext[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m)
-
-File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:38[0m, in [0;36mrequires_nltk_corpus.<locals>.decorated[0;34m(*args, **kwargs)[0m
-[1;32m     36[0m [38;5;28;01mexcept[39;00m [38;5;167;01mLookupError[39;00m [38;5;28;01mas[39;00m err:
-[1;32m     37[0m     [38;5;28mprint[39m(err)
-[0;32m---> 38[0m     [38;5;28;01mraise[39;00m MissingCorpusError()
-
-[0;31mMissingCorpusError[0m: 
-Looks like you are missing some required data for this feature.
-
-To download the necessary data, simply run
-
-    python -m textblob.download_corpora
-
-or use the NLTK downloader to download the missing data: http://nltk.org/data.html
-If this doesn't fix the problem, file an issue at https://github.com/sloria/TextBlob/issues.
-
+[0;31mModuleNotFoundError[0m: No module named 'plotly'
 

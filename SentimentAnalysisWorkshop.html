@@ -211,24 +211,6 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/ericrallen/sentiment-analysis-notebook/blob/main/SentimentAnalysisWorkshop.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onColab"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img src="_static/images/logo_colab.png">
-  </span>
-<span class="btn__text-container">Colab</span>
-</a>
-</li>
-      
-      
-      
-      
       <li>
 <button onclick="initThebeSBT()"
   class="btn btn-sm btn-launch-thebe dropdown-item"
@@ -395,6 +377,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">Few shot prompting</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-methods">Comparing methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-approaches">Comparing approaches</a></li>
 </ul>
             </nav>
         </div>
@@ -415,9 +399,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
 
-<span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">openai</span> <span class="n">nltk</span> <span class="n">ipywidgets</span> <span class="n">numpy</span> <span class="n">requests</span><span class="o">-</span><span class="n">cache</span> <span class="n">backoff</span> <span class="n">tiktoken</span> <span class="n">nrclex</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">openai</span> <span class="n">nltk</span> <span class="n">ipywidgets</span> <span class="n">numpy</span> <span class="n">requests</span><span class="o">-</span><span class="n">cache</span> <span class="n">backoff</span> <span class="n">tiktoken</span> <span class="n">nrclex</span> <span class="n">pandas</span>
 </pre></div>
 </div>
 </div>
@@ -451,10 +433,14 @@ document.write(`
 <p>First, we’ll import the relevant tools we’ll be using in the notebook and configure some global variables.</p>
 <div class="cell tag_thebe-init docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">nltk</span>
 <span class="kn">import</span> <span class="nn">openai</span>
 
+<span class="c1"># download nltk data</span>
 <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vader_lexicon&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
 
 <span class="c1"># globals</span>
 <span class="n">OPENAI_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">)</span>
@@ -467,6 +453,8 @@ document.write(`
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package vader_lexicon to
 [nltk_data]     /home/runner/nltk_data...
 [nltk_data]   Package vader_lexicon is already up-to-date!
+[nltk_data] Downloading package punkt to /home/runner/nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
 </pre></div>
 </div>
 </div>
@@ -478,10 +466,15 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">pywidgets</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cell focuses on some implemetation details for this notebook</span>
+<span class="c1"># that aren&#39;t actually important to the workshop</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">pywidgets</span>
 <span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">request</span>
 <span class="kn">import</span> <span class="nn">requests_cache</span>
 <span class="kn">import</span> <span class="nn">backoff</span>
+
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
 
 <span class="c1"># configuration widgets</span>
 <span class="kn">from</span> <span class="nn">widgets.config</span> <span class="kn">import</span> <span class="n">modelDropdown</span><span class="p">,</span> <span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span><span class="p">,</span> <span class="n">temperatureSlider</span><span class="p">,</span> <span class="n">sampleSizeSlider</span><span class="p">,</span> <span class="n">sampleSizeWarningLabel</span><span class="p">,</span> <span class="n">openAiHeader</span><span class="p">,</span> <span class="n">hackerNewsHeader</span>
@@ -494,11 +487,26 @@ document.write(`
 <span class="c1"># project-specific utilities</span>
 <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
 
-<span class="c1"># globals</span>
-<span class="n">REQUEST_CACHE_EXPIRATION_SECONDS</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">15</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;notebook&quot;</span>
 
 <span class="c1"># we&#39;ll use this session to cache our hacker news api requests</span>
+<span class="n">REQUEST_CACHE_EXPIRATION_SECONDS</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">15</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">CachedSession</span><span class="p">(</span><span class="s1">&#39;hackernews_cache&#39;</span><span class="p">,</span> <span class="n">expire_after</span><span class="o">=</span><span class="n">REQUEST_CACHE_EXPIRATION_SECONDS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">requests_cache</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">backoff</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="c1"># configuration widgets</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;plotly&#39;
 </pre></div>
 </div>
 </div>
@@ -558,7 +566,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b5499b0700e44028bf9a9350ba829c7f"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "146ace1154f84ff1848ec07a97bda989", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="simple-sentiment-analysis-with-nltk">
@@ -584,19 +592,19 @@ document.write(`
 
   <span class="c1"># map the sentiment to a human readable label</span>
   <span class="k">if</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Very Positive&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;very positive&#39;</span><span class="p">)</span>
   <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.4</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Positive&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;positive&#39;</span><span class="p">)</span>
   <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.1</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Leaning Positive&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;leaning positive&#39;</span><span class="p">)</span>
   <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.1</span> <span class="ow">and</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Leaning Negative&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;leaning negative&#39;</span><span class="p">)</span>
   <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.4</span> <span class="ow">and</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Negative&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;negative&#39;</span><span class="p">)</span>
   <span class="k">elif</span> <span class="n">sentiment</span><span class="p">[</span><span class="s1">&#39;compound&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.75</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Very Negative&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;very negative&#39;</span><span class="p">)</span>
   <span class="k">else</span><span class="p">:</span>
-    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;Neutral&#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="s1">&#39;neutral&#39;</span><span class="p">)</span>
   
 <span class="c1"># some simple test statements for our analyzer</span>
 <span class="n">statements</span> <span class="o">=</span> <span class="p">[</span>
@@ -613,11 +621,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I love that movie. (Positive)
-I hate that movie. (Negative)
-I like that movie. (Leaning Positive)
-I dislike that movie. (Leaning Negative)
-I saw that movie. (Neutral)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I love that movie. (positive)
+I hate that movie. (negative)
+I like that movie. (leaning positive)
+I dislike that movie. (leaning negative)
+I saw that movie. (neutral)
 </pre></div>
 </div>
 </div>
@@ -638,7 +646,7 @@ I saw that movie. (Neutral)
 </div>
 </details>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "3ccc3d986c6242bbaaf0f552b4e88e74"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "62282e7aaa41407fa59bf149820426a9", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="how-sentiment-analysis-works">
@@ -713,24 +721,52 @@ I saw that movie. (Neutral)
   
   <span class="k">return</span> <span class="n">stories</span>
 
-<span class="k">def</span> <span class="nf">analyzeStories</span><span class="p">(</span><span class="n">stories</span><span class="p">):</span>
+
+<span class="n">stories</span> <span class="o">=</span> <span class="n">getStories</span><span class="p">(</span><span class="n">getSampleStories</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">storyId</span><span class="p">,</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa
+Circles do not exist
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up
+Ask HN: What are some of the best books you’ve read about memory and the brain?
+Want to Enjoy Music More? Stop Streaming It
+Scientists Recover RNA from an Extinct Species for the First Time
+Companies Stall Climate Action Despite Earlier Promises
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service
+The joys of maintenance programming (2011)
+My uBlock Origin filters to remove distractions
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">analyzeStories</span><span class="p">(</span><span class="n">stories</span><span class="p">):</span>
   <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">analyzeSentiment</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
-
-<span class="n">stories</span> <span class="o">=</span> <span class="n">getStories</span><span class="p">(</span><span class="n">getSampleStories</span><span class="p">())</span>
 
 <span class="n">analyzeStories</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Microsoft Copilot, your everyday AI companion (Neutral)
-75% of Americans Believe AI Will Reduce Jobs (Neutral)
-Unum, a Better Number Format (Positive)
-Want to Enjoy Music More? Stop Streaming It (Leaning Positive)
-Don’t Be Shy – You Can Wear a Suit Whenever You Want (Leaning Negative)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (leaning positive)
+Circles do not exist (neutral)
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (leaning negative)
+Ask HN: What are some of the best books you’ve read about memory and the brain? (positive)
+Want to Enjoy Music More? Stop Streaming It (leaning positive)
+Scientists Recover RNA from an Extinct Species for the First Time (neutral)
+Companies Stall Climate Action Despite Earlier Promises (negative)
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service (neutral)
+The joys of maintenance programming (2011) (positive)
+My uBlock Origin filters to remove distractions (leaning negative)
 </pre></div>
 </div>
 </div>
@@ -818,7 +854,7 @@ Don’t Be Shy – You Can Wear a Suit Whenever You Want (Leaning Negative)
 </div>
 </details>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "ffee94e8af384a90a4197569b9a61add"}</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "96d18df367ac4b4fb5b95aced163bc48", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 </section>
@@ -859,7 +895,7 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 
 <span class="s2">The user will provide you with a prompt, and you will respond with the sentiment of that prompt.</span>
 
-<span class="s2">Be concise.</span>
+<span class="s2">Do not include any punctuation and only use lower case letters.</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="nd">@backoff</span><span class="o">.</span><span class="n">on_exception</span><span class="p">(</span><span class="n">backoff</span><span class="o">.</span><span class="n">expo</span><span class="p">,</span> <span class="n">openai</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">RateLimitError</span><span class="p">)</span>
@@ -898,7 +934,46 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa
+VADER: leaning positive
+gpt-3.5-turbo: positive
+---
+Circles do not exist
+VADER: neutral
+gpt-3.5-turbo: neutral
+---
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up
+VADER: leaning negative
+gpt-3.5-turbo: neutral
+---
+Ask HN: What are some of the best books you’ve read about memory and the brain?
+VADER: positive
+gpt-3.5-turbo: neutral
+---
+Want to Enjoy Music More? Stop Streaming It
+VADER: leaning positive
+gpt-3.5-turbo: neutral
+---
+Scientists Recover RNA from an Extinct Species for the First Time
+VADER: neutral
+gpt-3.5-turbo: neutral
+---
+Companies Stall Climate Action Despite Earlier Promises
+VADER: negative
+gpt-3.5-turbo: negative
+---
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service
+VADER: neutral
+gpt-3.5-turbo: neutral
+---
+The joys of maintenance programming (2011)
+VADER: positive
+gpt-3.5-turbo: neutral
+---
+My uBlock Origin filters to remove distractions
+VADER: leaning negative
+gpt-3.5-turbo: positive
+---
 </pre></div>
 </div>
 </div>
@@ -918,176 +993,31 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
   <span class="k">return</span> <span class="n">emotion</span><span class="o">.</span><span class="n">top_emotions</span>
 
 <span class="k">for</span> <span class="n">storyId</span><span class="p">,</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-  <span class="n">emotion</span> <span class="o">=</span> <span class="n">getNRCEmotion</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+  <span class="n">emotions</span> <span class="o">=</span> <span class="p">[]</span>
 
-  <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emotion</span>
+  <span class="n">emotionAnalysis</span> <span class="o">=</span> <span class="n">getNRCEmotion</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
 
-  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">VADER: </span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">NRC: </span><span class="si">{</span><span class="n">emotion</span><span class="si">}</span><span class="se">\n</span><span class="s2">---&quot;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">emotion</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">emotionAnalysis</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.00</span><span class="p">:</span>
+      <span class="n">emotions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emotion</span><span class="p">)</span>
+
+  <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;)&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>**********************************************************************
-  Resource punkt not found.
-  Please use the NLTK Downloader to obtain the resource:
-
-  <span class=" -Color -Color-Red">&gt;&gt;&gt; import nltk</span>
-<span class=" -Color -Color-Red">  &gt;&gt;&gt; nltk.download(&#39;punkt&#39;)</span>
-<span class=" -Color -Color-Red">  </span>
-  For more information see: https://www.nltk.org/data.html
-
-  Attempted to load tokenizers/punkt/PY3/english.pickle
-
-  Searched in:
-    - &#39;/home/runner/nltk_data&#39;
-    - &#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;
-    - &#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;
-    - &#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;
-    - &#39;/usr/share/nltk_data&#39;
-    - &#39;/usr/local/share/nltk_data&#39;
-    - &#39;/usr/lib/nltk_data&#39;
-    - &#39;/usr/local/lib/nltk_data&#39;
-    - &#39;&#39;
-**********************************************************************
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">LookupError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:35,</span> in <span class="ni">requires_nltk_corpus.&lt;locals&gt;.decorated</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">35</span>     <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="k">except</span> <span class="ne">LookupError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/tokenizers.py:57,</span> in <span class="ni">SentenceTokenizer.tokenize</span><span class="nt">(self, text)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span><span class="w"> </span><span class="sd">&#39;&#39;&#39;Return a list of sentences.&#39;&#39;&#39;</span>
-<span class="ne">---&gt; </span><span class="mi">57</span> <span class="k">return</span> <span class="n">nltk</span><span class="o">.</span><span class="n">tokenize</span><span class="o">.</span><span class="n">sent_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/tokenize/__init__.py:106,</span> in <span class="ni">sent_tokenize</span><span class="nt">(text, language)</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">98</span><span class="sd"> Return a sentence-tokenized copy of *text*,</span>
-<span class="g g-Whitespace">     </span><span class="mi">99</span><span class="sd"> using NLTK&#39;s recommended sentence tokenizer</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">104</span><span class="sd"> :param language: the model name in the Punkt corpus</span>
-<span class="g g-Whitespace">    </span><span class="mi">105</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">106</span> <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tokenizers/punkt/</span><span class="si">{</span><span class="n">language</span><span class="si">}</span><span class="s2">.pickle&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">107</span> <span class="k">return</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:750,</span> in <span class="ni">load</span><span class="nt">(resource_url, format, cache, verbose, logic_parser, fstruct_reader, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="c1"># Load the resource.</span>
-<span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">opened_resource</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="n">resource_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">752</span> <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:876,</span> in <span class="ni">_open</span><span class="nt">(resource_url)</span>
-<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">if</span> <span class="n">protocol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">876</span>     <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">path_</span><span class="p">,</span> <span class="n">path</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">877</span> <span class="k">elif</span> <span class="n">protocol</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">878</span>     <span class="c1"># urllib might not use mode=&#39;rb&#39;, so handle this one ourselves:</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nltk/data.py:583,</span> in <span class="ni">find</span><span class="nt">(resource_name, paths)</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span> <span class="n">resource_not_found</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">sep</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">583</span> <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="n">resource_not_found</span><span class="p">)</span>
-
-<span class="ne">LookupError</span>: 
-<span class="o">**********************************************************************</span>
-  <span class="n">Resource</span> <span class="n">punkt</span> <span class="ow">not</span> <span class="n">found</span><span class="o">.</span>
-  <span class="n">Please</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">Downloader</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">the</span> <span class="n">resource</span><span class="p">:</span>
-
-  <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">nltk</span>
-  <span class="o">&gt;&gt;&gt;</span> <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
-  
-  <span class="n">For</span> <span class="n">more</span> <span class="n">information</span> <span class="n">see</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
-
-  <span class="n">Attempted</span> <span class="n">to</span> <span class="n">load</span> <span class="n">tokenizers</span><span class="o">/</span><span class="n">punkt</span><span class="o">/</span><span class="n">PY3</span><span class="o">/</span><span class="n">english</span><span class="o">.</span><span class="n">pickle</span>
-
-  <span class="n">Searched</span> <span class="ow">in</span><span class="p">:</span>
-    <span class="o">-</span> <span class="s1">&#39;/home/runner/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/opt/hostedtoolcache/Python/3.11.5/x64/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/share/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;/usr/local/lib/nltk_data&#39;</span>
-    <span class="o">-</span> <span class="s1">&#39;&#39;</span>
-<span class="o">**********************************************************************</span>
-
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">MissingCorpusError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>   <span class="k">return</span> <span class="n">emotion</span><span class="o">.</span><span class="n">top_emotions</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">for</span> <span class="n">storyId</span><span class="p">,</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="ne">----&gt; </span><span class="mi">9</span>   <span class="n">emotion</span> <span class="o">=</span> <span class="n">getNRCEmotion</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span>   <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emotion</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span>   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">VADER: </span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">NRC: </span><span class="si">{</span><span class="n">emotion</span><span class="si">}</span><span class="se">\n</span><span class="s2">---&quot;</span><span class="p">)</span>
-
-<span class="nn">Cell In[12], line 4,</span> in <span class="ni">getNRCEmotion</span><span class="nt">(text)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="k">def</span> <span class="nf">getNRCEmotion</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-<span class="ne">----&gt; </span><span class="mi">4</span>   <span class="n">emotion</span> <span class="o">=</span> <span class="n">NRCLex</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>   <span class="k">return</span> <span class="n">emotion</span><span class="o">.</span><span class="n">top_emotions</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nrclex.py:2873,</span> in <span class="ni">NRCLex.__init__</span><span class="nt">(self, text)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2871</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
-<span class="g g-Whitespace">   </span><span class="mi">2872</span> <span class="n">blob</span> <span class="o">=</span> <span class="n">TextBlob</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="ne">-&gt; </span><span class="mi">2873</span> <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">words</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2874</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentences</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">sentences</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2875</span> <span class="n">build_word_affect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:24,</span> in <span class="ni">cached_property.__get__</span><span class="nt">(self, obj, cls)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="k">return</span> <span class="bp">self</span>
-<span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="k">return</span> <span class="n">value</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/blob.py:678,</span> in <span class="ni">TextBlob.words</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">670</span> <span class="nd">@cached_property</span>
-<span class="g g-Whitespace">    </span><span class="mi">671</span> <span class="k">def</span> <span class="nf">words</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">672</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Return a list of word tokens. This excludes punctuation characters.</span>
-<span class="g g-Whitespace">    </span><span class="mi">673</span><span class="sd">     If you want to include punctuation characters, access the ``tokens``</span>
-<span class="g g-Whitespace">    </span><span class="mi">674</span><span class="sd">     property.</span>
-<span class="g g-Whitespace">    </span><span class="mi">675</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">676</span><span class="sd">     :returns: A :class:`WordList &lt;WordList&gt;` of word tokens.</span>
-<span class="g g-Whitespace">    </span><span class="mi">677</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">678</span>     <span class="k">return</span> <span class="n">WordList</span><span class="p">(</span><span class="n">word_tokenize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span> <span class="n">include_punc</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/tokenizers.py:73,</span> in <span class="ni">word_tokenize</span><span class="nt">(text, include_punc, *args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">64</span> <span class="k">def</span> <span class="nf">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">include_punc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Convenience function for tokenizing text into words.</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">67</span><span class="sd">     NOTE: NLTK&#39;s word tokenizer expects sentences as input, so the text will be</span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span><span class="sd">     tokenized to sentences before being tokenized to words.</span>
-<span class="g g-Whitespace">     </span><span class="mi">69</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">70</span>     <span class="n">words</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span>         <span class="n">_word_tokenizer</span><span class="o">.</span><span class="n">itokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">include_punc</span><span class="o">=</span><span class="n">include_punc</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span>                                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="nn">---&gt; 73         for sentence</span> in <span class="ni">sent_tokenize</span><span class="nt">(text))</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>     <span class="k">return</span> <span class="n">words</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/base.py:64,</span> in <span class="ni">BaseTokenizer.itokenize</span><span class="nt">(self, text, *args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="k">def</span> <span class="nf">itokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">58</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Return a generator that generates tokens &quot;on-demand&quot;.</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">60</span><span class="sd">     .. versionadded:: 0.6.0</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span><span class="sd"> </span>
-<span class="g g-Whitespace">     </span><span class="mi">62</span><span class="sd">     :rtype: generator</span>
-<span class="g g-Whitespace">     </span><span class="mi">63</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="nn">---&gt; 64     return (t for t</span> in <span class="ni">self.tokenize</span><span class="nt">(text, *args, **kwargs))</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/textblob/decorators.py:38,</span> in <span class="ni">requires_nltk_corpus.&lt;locals&gt;.decorated</span><span class="nt">(*args, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="k">except</span> <span class="ne">LookupError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span>     <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">38</span>     <span class="k">raise</span> <span class="n">MissingCorpusError</span><span class="p">()</span>
-
-<span class="ne">MissingCorpusError</span>: 
-<span class="n">Looks</span> <span class="n">like</span> <span class="n">you</span> <span class="n">are</span> <span class="n">missing</span> <span class="n">some</span> <span class="n">required</span> <span class="n">data</span> <span class="k">for</span> <span class="n">this</span> <span class="n">feature</span><span class="o">.</span>
-
-<span class="n">To</span> <span class="n">download</span> <span class="n">the</span> <span class="n">necessary</span> <span class="n">data</span><span class="p">,</span> <span class="n">simply</span> <span class="n">run</span>
-
-    <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">textblob</span><span class="o">.</span><span class="n">download_corpora</span>
-
-<span class="ow">or</span> <span class="n">use</span> <span class="n">the</span> <span class="n">NLTK</span> <span class="n">downloader</span> <span class="n">to</span> <span class="n">download</span> <span class="n">the</span> <span class="n">missing</span> <span class="n">data</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">nltk</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">.</span><span class="n">html</span>
-<span class="n">If</span> <span class="n">this</span> <span class="n">doesn</span><span class="s1">&#39;t fix the problem, file an issue at https://github.com/sloria/TextBlob/issues.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa 
+Circles do not exist 
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (positive)
+Ask HN: What are some of the best books you’ve read about memory and the brain? 
+Want to Enjoy Music More? Stop Streaming It 
+Scientists Recover RNA from an Extinct Species for the First Time 
+Companies Stall Climate Action Despite Earlier Promises 
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service (negative)
+The joys of maintenance programming (2011) (trust)
+My uBlock Origin filters to remove distractions (fear, anger, negative, sadness)
 </pre></div>
 </div>
 </div>
@@ -1144,11 +1074,16 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Florida is now adding more solar power than any other state (optimistic, hopeful, proud)
-Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative (excited, hopeful)
-Web apps are better than no apps (optimistic)
-FTC warns pharma companies about sham patent listings designed to delay generics (concerned, cautious, skeptical, frustrated, determined)
-Ask HN: Is Svelte a good choice for large-scale apps? (neutral)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (excited, optimistic)
+Circles do not exist (neutral)
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (uncertainty, surprise, sadness)
+Ask HN: What are some of the best books you’ve read about memory and the brain? (curiosity, interest, seeking information)
+Want to Enjoy Music More? Stop Streaming It (neutral)
+Scientists Recover RNA from an Extinct Species for the First Time (curiosity, excitement, awe)
+Companies Stall Climate Action Despite Earlier Promises (frustration, disappointment)
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service (neutral)
+The joys of maintenance programming (2011) (neutral)
+My uBlock Origin filters to remove distractions (neutral)
 </pre></div>
 </div>
 </div>
@@ -1229,11 +1164,16 @@ Ask HN: Is Svelte a good choice for large-scale apps? (neutral)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Florida is now adding more solar power than any other state(😃)
-Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative(😃)
-Web apps are better than no apps(😊)
-FTC warns pharma companies about sham patent listings designed to delay generics(😡😠😤😡😠)
-Ask HN: Is Svelte a good choice for large-scale apps?(😕)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa(😃)
+Circles do not exist(😕)
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up(😢)
+Ask HN: What are some of the best books you’ve read about memory and the brain?(😊)
+Want to Enjoy Music More? Stop Streaming It(😕)
+Scientists Recover RNA from an Extinct Species for the First Time(😮🔬🦖🧬🧪)
+Companies Stall Climate Action Despite Earlier Promises(😔😡😢😤😩)
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service(😕)
+The joys of maintenance programming (2011)(😊)
+My uBlock Origin filters to remove distractions(😊)
 </pre></div>
 </div>
 </div>
@@ -1296,11 +1236,16 @@ Ask HN: Is Svelte a good choice for large-scale apps?(😕)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Florida is now adding more solar power than any other state(😊)
-Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative(😃)
-Web apps are better than no apps(😐)
-FTC warns pharma companies about sham patent listings designed to delay generics(😡)
-Ask HN: Is Svelte a good choice for large-scale apps?(🤔)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa(😃)
+Circles do not exist(🤔)
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up(😮)
+Ask HN: What are some of the best books you’ve read about memory and the brain?(😊)
+Want to Enjoy Music More? Stop Streaming It(😕)
+Scientists Recover RNA from an Extinct Species for the First Time(😮)
+Companies Stall Climate Action Despite Earlier Promises(😔)
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service(😮)
+The joys of maintenance programming (2011)(😒)
+My uBlock Origin filters to remove distractions(😌)
 </pre></div>
 </div>
 </div>
@@ -1356,7 +1301,7 @@ Ask HN: Is Svelte a good choice for large-scale apps?(🤔)
     <span class="k">if</span> <span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">]:</span>
       <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;fewShot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentiment</span>
+    <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;fewshot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentiment</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
@@ -1365,16 +1310,418 @@ Ask HN: Is Svelte a good choice for large-scale apps?(🤔)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Florida is now adding more solar power than any other state (🌞)
-Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative (😃)
-Web apps are better than no apps (🤷‍♂️)
-FTC warns pharma companies about sham patent listings designed to delay generics (😠)
-Ask HN: Is Svelte a good choice for large-scale apps? (🤔)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (😃)
+Circles do not exist (🤔)
+Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (😮)
+Ask HN: What are some of the best books you’ve read about memory and the brain? (🤔)
+Want to Enjoy Music More? Stop Streaming It (🤔)
+Scientists Recover RNA from an Extinct Species for the First Time (🤯)
+Companies Stall Climate Action Despite Earlier Promises (😔)
+Elon Musk says X will charge users ‘a small monthly payment’ to use its service (🤔)
+The joys of maintenance programming (2011) (😅)
+My uBlock Origin filters to remove distractions (😌)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
+</section>
+<section id="comparing-methods">
+<h2>Comparing methods<a class="headerlink" href="#comparing-methods" title="Permalink to this heading">#</a></h2>
+<p>Let’s compare the sentiment analysis results of the different approaches we’ve taken in this workshop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{37577912: {&#39;title&#39;: &#39;Florida is now adding more solar power than any other state&#39;, &#39;time&#39;: 1695162724, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Neutral&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;optimistic, hopeful, proud&#39;, &#39;emoji&#39;: &#39;😃&#39;, &#39;oneshot&#39;: &#39;😊&#39;, &#39;fewShot&#39;: &#39;🌞&#39;}}}}, 37572743: {&#39;title&#39;: &#39;Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative&#39;, &#39;time&#39;: 1695142399, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Neutral&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;excited, hopeful&#39;, &#39;emoji&#39;: &#39;😃&#39;, &#39;oneshot&#39;: &#39;😃&#39;, &#39;fewShot&#39;: &#39;😃&#39;}}}}, 37567497: {&#39;title&#39;: &#39;Web apps are better than no apps&#39;, &#39;time&#39;: 1695116611, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Leaning Positive&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;optimistic&#39;, &#39;emoji&#39;: &#39;😊&#39;, &#39;oneshot&#39;: &#39;😐&#39;, &#39;fewShot&#39;: &#39;🤷\u200d♂️&#39;}}}}, 37561696: {&#39;title&#39;: &#39;FTC warns pharma companies about sham patent listings designed to delay generics&#39;, &#39;time&#39;: 1695069525, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Negative&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Neutral&#39;, &#39;advanced&#39;: &#39;concerned, cautious, skeptical, frustrated, determined&#39;, &#39;emoji&#39;: &#39;😡😠😤😡😠&#39;, &#39;oneshot&#39;: &#39;😡&#39;, &#39;fewShot&#39;: &#39;😠&#39;}}}}, 37569646: {&#39;title&#39;: &#39;Ask HN: Is Svelte a good choice for large-scale apps?&#39;, &#39;time&#39;: 1695129947, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Positive&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive.&#39;, &#39;advanced&#39;: &#39;neutral&#39;, &#39;emoji&#39;: &#39;😕&#39;, &#39;oneshot&#39;: &#39;🤔&#39;, &#39;fewShot&#39;: &#39;🤔&#39;}}}}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-approaches">
+<h2>Comparing approaches<a class="headerlink" href="#comparing-approaches" title="Permalink to this heading">#</a></h2>
+<p>We’ve looked at various approaches to analyzing sentiment and explored some interesting and novel ways that we can work with AI models like ChatGPT to perform tasks that used to require large investments of time to gather and label data and then train a model.</p>
+<p>Let’s compare the results of each analysis.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">sentimentData</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;Story&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;VADER&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;NRC&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;ChatGPT (Sentiment)&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;ChatGPT (Emotion)&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;Zero Shot&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;One Shot&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="s2">&quot;Few Shot&quot;</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">storyId</span><span class="p">,</span> <span class="n">story</span> <span class="ow">in</span> <span class="n">stories</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+  <span class="k">if</span> <span class="s1">&#39;title&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">:</span>
+    <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;Story&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+  
+  <span class="k">if</span> <span class="s1">&#39;vader&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]:</span>
+    <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;VADER&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">])</span>
+  
+  <span class="k">if</span> <span class="s1">&#39;nrclex&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]:</span>
+    <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;NRC&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">])</span>
+
+  <span class="k">if</span> <span class="s1">&#39;openai&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="s1">&#39;basic&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]:</span>
+      <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;ChatGPT (Sentiment)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;basic&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;advanced&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]:</span>
+      <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;ChatGPT (Emotion)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;advanced&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;emoji&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]:</span>
+      <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;Zero Shot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;emoji&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;oneshot&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]:</span>
+      <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;One Shot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;oneshot&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="s1">&#39;fewshot&#39;</span> <span class="ow">in</span> <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">]:</span>
+      <span class="n">sentimentData</span><span class="p">[</span><span class="s2">&quot;Few Shot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;fewshot&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cell is only used to display a dataframe of our sentiment analysis results</span>
+<span class="n">sentimentDataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">sentimentData</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Story&quot;</span><span class="p">,</span> <span class="s2">&quot;VADER&quot;</span><span class="p">,</span> <span class="s2">&quot;ChatGPT (Sentiment)&quot;</span><span class="p">],</span> <span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">sentimentDataFrame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Story</th>
+      <th>VADER</th>
+      <th>ChatGPT (Basic)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Amazon brings generative AI to Alexa</td>
+      <td>leaning positive</td>
+      <td>positive</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Circles do not exist</td>
+      <td>neutral</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Surface and Windows lead Panos Panay is leavin...</td>
+      <td>leaning negative</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Ask HN: What are some of the best books you’ve...</td>
+      <td>positive</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Want to Enjoy Music More? Stop Streaming It</td>
+      <td>leaning positive</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Scientists Recover RNA from an Extinct Species...</td>
+      <td>neutral</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Companies Stall Climate Action Despite Earlier...</td>
+      <td>negative</td>
+      <td>negative</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Elon Musk says X will charge users ‘a small mo...</td>
+      <td>neutral</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The joys of maintenance programming (2011)</td>
+      <td>positive</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>My uBlock Origin filters to remove distractions</td>
+      <td>leaning negative</td>
+      <td>positive</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this code cell is only used to display a dataframe with our emotional analysis results</span>
+<span class="n">emotionDataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">sentimentData</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Story&quot;</span><span class="p">,</span> <span class="s2">&quot;NRC&quot;</span><span class="p">,</span> <span class="s2">&quot;ChatGPT (Emotion)&quot;</span><span class="p">])</span>
+
+<span class="c1"># often NRCLex will not have data and instead of displaying NaN we&#39;ll leave it blank</span>
+<span class="n">emotionDataFrame</span> <span class="o">=</span> <span class="n">emotionDataFrame</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">emotionDataFrame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Story</th>
+      <th>NRC</th>
+      <th>ChatGPT (Advanced)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Amazon brings generative AI to Alexa</td>
+      <td></td>
+      <td>excited, optimistic</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Circles do not exist</td>
+      <td></td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Surface and Windows lead Panos Panay is leavin...</td>
+      <td>positive</td>
+      <td>uncertainty, surprise, sadness</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Ask HN: What are some of the best books you’ve...</td>
+      <td></td>
+      <td>curiosity, interest, seeking information</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Want to Enjoy Music More? Stop Streaming It</td>
+      <td></td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Scientists Recover RNA from an Extinct Species...</td>
+      <td></td>
+      <td>curiosity, excitement, awe</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Companies Stall Climate Action Despite Earlier...</td>
+      <td></td>
+      <td>frustration, disappointment</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Elon Musk says X will charge users ‘a small mo...</td>
+      <td>negative</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The joys of maintenance programming (2011)</td>
+      <td>trust</td>
+      <td>neutral</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>My uBlock Origin filters to remove distractions</td>
+      <td>fear, anger, negative, sadness</td>
+      <td>neutral</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this cell is just used to display a dataframe with our emoji results</span>
+<span class="n">emojiDataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">sentimentData</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Story&quot;</span><span class="p">,</span> <span class="s2">&quot;Zero Shot&quot;</span><span class="p">,</span> <span class="s2">&quot;One Shot&quot;</span><span class="p">,</span> <span class="s2">&quot;Few Shot&quot;</span><span class="p">])</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">emojiDataFrame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Story</th>
+      <th>Zero Shot</th>
+      <th>One Shot</th>
+      <th>Few Shot</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Amazon brings generative AI to Alexa</td>
+      <td>😃</td>
+      <td>😃</td>
+      <td>😃</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Circles do not exist</td>
+      <td>😕</td>
+      <td>🤔</td>
+      <td>🤔</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Surface and Windows lead Panos Panay is leavin...</td>
+      <td>😢</td>
+      <td>😮</td>
+      <td>😮</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Ask HN: What are some of the best books you’ve...</td>
+      <td>😊</td>
+      <td>😊</td>
+      <td>🤔</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Want to Enjoy Music More? Stop Streaming It</td>
+      <td>😕</td>
+      <td>😕</td>
+      <td>🤔</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Scientists Recover RNA from an Extinct Species...</td>
+      <td>😮🔬🦖🧬🧪</td>
+      <td>😮</td>
+      <td>🤯</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Companies Stall Climate Action Despite Earlier...</td>
+      <td>😔😡😢😤😩</td>
+      <td>😔</td>
+      <td>😔</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Elon Musk says X will charge users ‘a small mo...</td>
+      <td>😕</td>
+      <td>😮</td>
+      <td>🤔</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>The joys of maintenance programming (2011)</td>
+      <td>😊</td>
+      <td>😒</td>
+      <td>😅</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>My uBlock Origin filters to remove distractions</td>
+      <td>😊</td>
+      <td>😌</td>
+      <td>😌</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 </section>
 </section>
 
@@ -1451,6 +1798,8 @@ Ask HN: Is Svelte a good choice for large-scale apps? (🤔)
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">Few shot prompting</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-methods">Comparing methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-approaches">Comparing approaches</a></li>
 </ul>
   </nav></div>
 

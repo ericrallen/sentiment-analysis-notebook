@@ -6,5 +6,6 @@ nltk
 nrclex
 numpy
 openai
+pandas
 requests-cache
 tiktoken

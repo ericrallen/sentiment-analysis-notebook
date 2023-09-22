@@ -2,14 +2,12 @@
 
 In this interactive workshop powered by a Jupyter Notebook, we'll explore the basics of traditional Sentiment Analysis and how we can expand our sentiment analysis capabilities with ChatGPT and some clever prompting strategies.
 
-## Interactive Notebook
-
-This [workshop notebook](https://ericrallen.github.io/sentiment-analysis-notebook/) is available on GitHub Pages so you can run it in your browser without installing anything locally.
-
 ## Pre-requisites
 
 1. Python `>=3.11`
 2. [OpenAI API Key](https://platform.openai.com/account/api-keys)
+
+**Note**: If you are running this notebook locally, it will look for the `OPENAI_API_KEY` environment variable, but you can also manually enter your OpenAI API key into the notebook.
 
 ## Getting Started
 
@@ -38,8 +36,12 @@ This [workshop notebook](https://ericrallen.github.io/sentiment-analysis-noteboo
    jupyter notebook
    ```
 
-**Note**: If you are running this notebook locally, it will look for the `OPENAI_API_KEY` environment variable, but you can also manually enter your OpenAI API key into the notebook.
+## Interactive Notebook
+
+This [workshop notebook](https://ericrallen.github.io/sentiment-analysis-notebook/) is automatically deployed to GitHub Pages so you can run it in your browser without installing anything locally.
+
+**Note**: Unfortunately, the `ipywidgets` library used to create interactive demonstrations in the notebook does not seem to cooperate with GitHub Pages, MyBinder, or Google Colab. This is my first Jupyter Notebook, so it's likely that I misconfigured something.
 
 ## Resources
 
-Add stuff here.
+_Coming Soon_

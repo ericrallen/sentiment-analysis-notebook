@@ -211,24 +211,6 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/ericrallen/sentiment-analysis-notebook/blob/main/SentimentAnalysisWorkshop.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onColab"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img src="_static/images/logo_colab.png">
-  </span>
-<span class="btn__text-container">Colab</span>
-</a>
-</li>
-      
-      
-      
-      
       <li>
 <button onclick="initThebeSBT()"
   class="btn btn-sm btn-launch-thebe dropdown-item"
@@ -395,7 +377,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">Few shot prompting</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-methods">Comparing methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-approaches">Comparing approaches</a></li>
 </ul>
             </nav>
@@ -462,8 +443,8 @@ document.write(`
 
 <span class="c1"># globals</span>
 <span class="n">OPENAI_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">)</span>
-<span class="n">TEMPERATURE</span> <span class="o">=</span> <span class="mf">0.2</span>
-<span class="n">STORY_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">TEMPERATURE</span> <span class="o">=</span> <span class="mf">0.37</span>
+<span class="n">STORY_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">12</span>
 </pre></div>
 </div>
 </div>
@@ -491,9 +472,6 @@ document.write(`
 <span class="kn">import</span> <span class="nn">requests_cache</span>
 <span class="kn">import</span> <span class="nn">backoff</span>
 
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
-
 <span class="c1"># configuration widgets</span>
 <span class="kn">from</span> <span class="nn">widgets.config</span> <span class="kn">import</span> <span class="n">modelDropdown</span><span class="p">,</span> <span class="n">apiKeyInput</span><span class="p">,</span> <span class="n">apiKeyUpdateButton</span><span class="p">,</span> <span class="n">temperatureSlider</span><span class="p">,</span> <span class="n">sampleSizeSlider</span><span class="p">,</span> <span class="n">sampleSizeWarningLabel</span><span class="p">,</span> <span class="n">openAiHeader</span><span class="p">,</span> <span class="n">hackerNewsHeader</span>
 
@@ -516,15 +494,15 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">requests_cache</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">backoff</span>
-<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="c1"># configuration widgets</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="c1"># project-specific utilities</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;notebook&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># we&#39;ll use this session to cache our hacker news api requests</span>
 
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;plotly&#39;
+<span class="ne">NameError</span>: name &#39;pio&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -883,7 +861,7 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 
     <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;openai&#39;</span><span class="p">][</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="p">][</span><span class="s1">&#39;basic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentiment</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">VADER: </span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;vader&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">modelDropdown</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="se">\n</span><span class="s2">---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please enter your OpenAI API key above and rerun this cell&#39;</span><span class="p">)</span>
 </pre></div>
@@ -1166,17 +1144,6 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </div>
 </section>
 </section>
-<section id="comparing-methods">
-<h2>Comparing methods<a class="headerlink" href="#comparing-methods" title="Permalink to this heading">#</a></h2>
-<p>Let’s compare the sentiment analysis results of the different approaches we’ve taken in this workshop.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 <section id="comparing-approaches">
 <h2>Comparing approaches<a class="headerlink" href="#comparing-approaches" title="Permalink to this heading">#</a></h2>
 <p>We’ve looked at various approaches to analyzing sentiment and explored some interesting and novel ways that we can work with AI models like ChatGPT to perform tasks that used to require large investments of time to gather and label data and then train a model.</p>
@@ -1358,7 +1325,6 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-prompting">Few shot prompting</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-methods">Comparing methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-approaches">Comparing approaches</a></li>
 </ul>
   </nav></div>

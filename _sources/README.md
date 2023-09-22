@@ -2,6 +2,14 @@
 
 In this interactive workshop powered by a Jupyter Notebook, we'll explore the basics of traditional Sentiment Analysis and how we can expand our sentiment analysis capabilities with ChatGPT and some clever prompting strategies.
 
+## Interactive Notebook
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ericrallen/sentiment-analysis-notebook/main)
+
+In addition to being available on Binder, this [workshop notebook](https://ericrallen.github.io/sentiment-analysis-notebook/) is automatically deployed to GitHub Pages.
+
+**Note**: Unfortunately, the `ipywidgets` library used to create interactive demonstrations in the notebook does not seem to cooperate with GitHub Pages. This is my first Jupyter Notebook, so it's likely that I misconfigured something.
+
 ## Pre-requisites
 
 1. Python `>=3.11`
@@ -35,12 +43,6 @@ In this interactive workshop powered by a Jupyter Notebook, we'll explore the ba
    ```shell
    jupyter notebook
    ```
-
-## Interactive Notebook
-
-This [workshop notebook](https://ericrallen.github.io/sentiment-analysis-notebook/) is automatically deployed to GitHub Pages so you can run it in your browser without installing anything locally.
-
-**Note**: Unfortunately, the `ipywidgets` library used to create interactive demonstrations in the notebook does not seem to cooperate with GitHub Pages, MyBinder, or Google Colab. This is my first Jupyter Notebook, so it's likely that I misconfigured something.
 
 ## Resources
 

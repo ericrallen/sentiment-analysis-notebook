@@ -75,15 +75,21 @@ def getNRCEmotion(text):
   emotion = NRCLex(text)
 
   return emotion.top_emotions
-
+  
 
 def getAdvancedSentiment(event):
   text = advancedDemoString.value.strip()
 
   # Get the sentiment
   sentiment = analyzeBasicSentiment(text)
-  emotions = getNRCEmotion(text)
+  emotionAnalysis = getNRCEmotion(text)
   openAiSentiment = advancedChatGptSentiment(text)
+
+  emotions = []
+
+  for (emotion, value) in emotionAnalysis:
+    if value > 0.00:
+      emotions.append(emotion)
 
   if sentiment:
     with basicAnalysis:

@@ -18,41 +18,47 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# this cell focuses on some implemetation details for this notebook
-# that aren't actually important to the workshop
-import ipywidgets as pywidgets
-import requests as request
-import requests_cache
-import backoff
+# this cell is only used to display a dataframe of our sentiment analysis results
+sentimentDataFrame = pd.DataFrame(data=sentimentData, columns=["Story", "VADER", "ChatGPT (Sentiment)"], )
 
-# configuration widgets
-from widgets.config import modelDropdown, apiKeyInput, apiKeyUpdateButton, temperatureSlider, sampleSizeSlider, sampleSizeWarningLabel, openAiHeader, hackerNewsHeader
-
-# project-specific widgets
-from widgets.simple import simpleAnalysisWidget
-from widgets.advanced import advancedAnalysisWidget, configureOpenAi
-from widgets.tokens import tokenAnalysisWidget, configureModel
-
-# project-specific utilities
-from utils.obfuscate import obfuscateKey
-
-pio.templates.default = "plotly_white"
-pio.renderers.default = "notebook"
-
-# we'll use this session to cache our hacker news api requests
-REQUEST_CACHE_EXPIRATION_SECONDS = 60 * 15
-session = requests_cache.CachedSession('hackernews_cache', expire_after=REQUEST_CACHE_EXPIRATION_SECONDS)
+display(sentimentDataFrame)
 ------------------
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-Cell [0;32mIn[3], line 19[0m
-[1;32m     16[0m [38;5;66;03m# project-specific utilities[39;00m
-[1;32m     17[0m [38;5;28;01mfrom[39;00m [38;5;21;01mutils[39;00m[38;5;21;01m.[39;00m[38;5;21;01mobfuscate[39;00m [38;5;28;01mimport[39;00m obfuscateKey
-[0;32m---> 19[0m [43mpio[49m[38;5;241m.[39mtemplates[38;5;241m.[39mdefault [38;5;241m=[39m [38;5;124m"[39m[38;5;124mplotly_white[39m[38;5;124m"[39m
-[1;32m     20[0m pio[38;5;241m.[39mrenderers[38;5;241m.[39mdefault [38;5;241m=[39m [38;5;124m"[39m[38;5;124mnotebook[39m[38;5;124m"[39m
-[1;32m     22[0m [38;5;66;03m# we'll use this session to cache our hacker news api requests[39;00m
+[0;31mValueError[0m                                Traceback (most recent call last)
+Cell [0;32mIn[24], line 2[0m
+[1;32m      1[0m [38;5;66;03m# this cell is only used to display a dataframe of our sentiment analysis results[39;00m
+[0;32m----> 2[0m sentimentDataFrame [38;5;241m=[39m [43mpd[49m[38;5;241;43m.[39;49m[43mDataFrame[49m[43m([49m[43mdata[49m[38;5;241;43m=[39;49m[43msentimentData[49m[43m,[49m[43m [49m[43mcolumns[49m[38;5;241;43m=[39;49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mStory[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mVADER[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mChatGPT (Sentiment)[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m[43m [49m[43m)[49m
+[1;32m      4[0m display(sentimentDataFrame)
 
-[0;31mNameError[0m: name 'pio' is not defined
+File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/frame.py:736[0m, in [0;36mDataFrame.__init__[0;34m(self, data, index, columns, dtype, copy)[0m
+[1;32m    730[0m     mgr [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_init_mgr(
+[1;32m    731[0m         data, axes[38;5;241m=[39m{[38;5;124m"[39m[38;5;124mindex[39m[38;5;124m"[39m: index, [38;5;124m"[39m[38;5;124mcolumns[39m[38;5;124m"[39m: columns}, dtype[38;5;241m=[39mdtype, copy[38;5;241m=[39mcopy
+[1;32m    732[0m     )
+[1;32m    734[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(data, [38;5;28mdict[39m):
+[1;32m    735[0m     [38;5;66;03m# GH#38939 de facto copy defaults to False only in non-dict cases[39;00m
+[0;32m--> 736[0m     mgr [38;5;241m=[39m [43mdict_to_mgr[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[43mindex[49m[43m,[49m[43m [49m[43mcolumns[49m[43m,[49m[43m [49m[43mdtype[49m[38;5;241;43m=[39;49m[43mdtype[49m[43m,[49m[43m [49m[43mcopy[49m[38;5;241;43m=[39;49m[43mcopy[49m[43m,[49m[43m [49m[43mtyp[49m[38;5;241;43m=[39;49m[43mmanager[49m[43m)[49m
+[1;32m    737[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(data, ma[38;5;241m.[39mMaskedArray):
+[1;32m    738[0m     [38;5;28;01mfrom[39;00m [38;5;21;01mnumpy[39;00m[38;5;21;01m.[39;00m[38;5;21;01mma[39;00m [38;5;28;01mimport[39;00m mrecords
+
+File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/internals/construction.py:448[0m, in [0;36mdict_to_mgr[0;34m(data, index, columns, dtype, typ, copy)[0m
+[1;32m    444[0m missing [38;5;241m=[39m arrays[38;5;241m.[39misna()
+[1;32m    445[0m [38;5;28;01mif[39;00m index [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    446[0m     [38;5;66;03m# GH10856[39;00m
+[1;32m    447[0m     [38;5;66;03m# raise ValueError if only scalars in dict[39;00m
+[0;32m--> 448[0m     index [38;5;241m=[39m [43m_extract_index[49m[43m([49m[43marrays[49m[43m[[49m[38;5;241;43m~[39;49m[43mmissing[49m[43m][49m[43m)[49m
+[1;32m    449[0m [38;5;28;01melse[39;00m:
+[1;32m    450[0m     index [38;5;241m=[39m ensure_index(index)
+
+File [0;32m/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/internals/construction.py:677[0m, in [0;36m_extract_index[0;34m(data)[0m
+[1;32m    675[0m lengths [38;5;241m=[39m [38;5;28mlist[39m([38;5;28mset[39m(raw_lengths))
+[1;32m    676[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(lengths) [38;5;241m>[39m [38;5;241m1[39m:
+[0;32m--> 677[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mAll arrays must be of the same length[39m[38;5;124m"[39m)
+[1;32m    679[0m [38;5;28;01mif[39;00m have_dicts:
+[1;32m    680[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[1;32m    681[0m         [38;5;124m"[39m[38;5;124mMixing dicts with non-Series may lead to ambiguous ordering.[39m[38;5;124m"[39m
+[1;32m    682[0m     )
+
+[0;31mValueError[0m: All arrays must be of the same length
 

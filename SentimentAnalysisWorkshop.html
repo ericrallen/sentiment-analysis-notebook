@@ -483,26 +483,9 @@ document.write(`
 <span class="c1"># project-specific utilities</span>
 <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
 
-<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
-<span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;notebook&quot;</span>
-
 <span class="c1"># we&#39;ll use this session to cache our hacker news api requests</span>
 <span class="n">REQUEST_CACHE_EXPIRATION_SECONDS</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">15</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">requests_cache</span><span class="o">.</span><span class="n">CachedSession</span><span class="p">(</span><span class="s1">&#39;hackernews_cache&#39;</span><span class="p">,</span> <span class="n">expire_after</span><span class="o">=</span><span class="n">REQUEST_CACHE_EXPIRATION_SECONDS</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="c1"># project-specific utilities</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">utils.obfuscate</span> <span class="kn">import</span> <span class="n">obfuscateKey</span>
-<span class="ne">---&gt; </span><span class="mi">19</span> <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">pio</span><span class="o">.</span><span class="n">renderers</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;notebook&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># we&#39;ll use this session to cache our hacker news api requests</span>
-
-<span class="ne">NameError</span>: name &#39;pio&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -561,6 +544,8 @@ document.write(`
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "13c05d1fb9094bd5861f96d3bb9db343"}</script></div>
 </div>
 </section>
 <section id="simple-sentiment-analysis-with-nltk">
@@ -614,6 +599,15 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I love that movie. (positive)
+I hate that movie. (negative)
+I like that movie. (leaning positive)
+I dislike that movie. (leaning negative)
+I saw that movie. (neutral)
+</pre></div>
+</div>
+</div>
 </div>
 <p>We’ve wired the input below up to the same analyzer function from above. Type in some text and see how the analyzer responds.</p>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
@@ -630,6 +624,8 @@ document.write(`
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "02accbd42b4948d7858ac7529a380834"}</script></div>
 </div>
 </section>
 <section id="how-sentiment-analysis-works">
@@ -712,6 +708,22 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPT-4 training cutoff date is now January 2022
+Is Fortran easier to optimize than C for heavy calculations?
+Ask Ethan: Why don’t neutron stars decay?
+Corrosion: Gossip-based service discovery (&amp; more) for large distributed systems
+Volvo to cease production of diesel cars in a few months
+Terraria developer bashes Unity, donates $200k to open source alternatives
+Why open source AI will win
+Demands for Tips Are Up. Actual Tipping, Not So Much
+An Inside Look at Ditto&#39;s Delta State CRDTs
+Rolex earns billions every year. Where does the money go?
+Marin Mersenne on the Consolation of Sad Music
+Philips Hue will soon force users to create an account
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -722,6 +734,22 @@ document.write(`
 
 
 <span class="n">analyzeStories</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPT-4 training cutoff date is now January 2022 (neutral)
+Is Fortran easier to optimize than C for heavy calculations? (positive)
+Ask Ethan: Why don’t neutron stars decay? (negative)
+Corrosion: Gossip-based service discovery (&amp; more) for large distributed systems (neutral)
+Volvo to cease production of diesel cars in a few months (neutral)
+Terraria developer bashes Unity, donates $200k to open source alternatives (neutral)
+Why open source AI will win (positive)
+Demands for Tips Are Up. Actual Tipping, Not So Much (neutral)
+An Inside Look at Ditto&#39;s Delta State CRDTs (neutral)
+Rolex earns billions every year. Where does the money go? (neutral)
+Marin Mersenne on the Consolation of Sad Music (negative)
+Philips Hue will soon force users to create an account (leaning positive)
 </pre></div>
 </div>
 </div>
@@ -772,6 +800,25 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;I&#39;, &#39; love&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
+[40, 3021, 430, 5818, 13]
+---
+[&#39;I&#39;, &#39; hate&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
+[40, 12491, 430, 5818, 13]
+---
+[&#39;I&#39;, &#39; like&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
+[40, 1093, 430, 5818, 13]
+---
+[&#39;I&#39;, &#39; dislike&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
+[40, 48969, 430, 5818, 13]
+---
+[&#39;I&#39;, &#39; saw&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
+[40, 5602, 430, 5818, 13]
+---
+</pre></div>
+</div>
+</div>
 </div>
 <p>We’ve wired the input below up to the same tokenizer function from above. Type in some text and see how the tokenizer responds.</p>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
@@ -789,6 +836,8 @@ document.write(`
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "8c0e3be80a384f9eab2f15f47d1076bc"}</script></div>
 </div>
 </section>
 </section>
@@ -867,6 +916,11 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="going-further">
@@ -894,6 +948,22 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
   <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
 
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;)&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GPT-4 training cutoff date is now January 2022 
+Is Fortran easier to optimize than C for heavy calculations? 
+Ask Ethan: Why don’t neutron stars decay? (fear, trust, positive, negative, sadness)
+Corrosion: Gossip-based service discovery (&amp; more) for large distributed systems (positive)
+Volvo to cease production of diesel cars in a few months (positive, anticipation)
+Terraria developer bashes Unity, donates $200k to open source alternatives 
+Why open source AI will win 
+Demands for Tips Are Up. Actual Tipping, Not So Much 
+An Inside Look at Ditto&#39;s Delta State CRDTs 
+Rolex earns billions every year. Where does the money go? (anger, trust, surprise, positive, joy, anticipation)
+Marin Mersenne on the Consolation of Sad Music 
+Philips Hue will soon force users to create an account (fear, anger, trust, positive, negative, joy)
 </pre></div>
 </div>
 </div>
@@ -949,6 +1019,11 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
 <details class="hide above-input">
@@ -967,6 +1042,8 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "07633f893a424c0cade06208a50a1259"}</script></div>
 </div>
 </section>
 </section>
@@ -1020,6 +1097,11 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please enter your OpenAI API key above and rerun this cell&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
 </pre></div>
 </div>
 </div>
@@ -1081,6 +1163,11 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="few-shot-prompting">
@@ -1138,6 +1225,11 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please enter your OpenAI API key above and rerun this cell&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Please enter your OpenAI API key above and rerun this cell
 </pre></div>
 </div>
 </div>
@@ -1213,6 +1305,46 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># this cell is only used to display a dataframe of our sentiment analysis results</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">sentimentDataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">sentimentData</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Story&quot;</span><span class="p">,</span> <span class="s2">&quot;VADER&quot;</span><span class="p">,</span> <span class="s2">&quot;ChatGPT (Sentiment)&quot;</span><span class="p">],</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">display</span><span class="p">(</span><span class="n">sentimentDataFrame</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/frame.py:736,</span> in <span class="ni">DataFrame.__init__</span><span class="nt">(self, data, index, columns, dtype, copy)</span>
+<span class="g g-Whitespace">    </span><span class="mi">730</span>     <span class="n">mgr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_mgr</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">731</span>         <span class="n">data</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">:</span> <span class="n">columns</span><span class="p">},</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span>
+<span class="g g-Whitespace">    </span><span class="mi">732</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">734</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">735</span>     <span class="c1"># GH#38939 de facto copy defaults to False only in non-dict cases</span>
+<span class="ne">--&gt; </span><span class="mi">736</span>     <span class="n">mgr</span> <span class="o">=</span> <span class="n">dict_to_mgr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="n">manager</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">737</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">738</span>     <span class="kn">from</span> <span class="nn">numpy.ma</span> <span class="kn">import</span> <span class="n">mrecords</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/internals/construction.py:448,</span> in <span class="ni">dict_to_mgr</span><span class="nt">(data, index, columns, dtype, typ, copy)</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span> <span class="n">missing</span> <span class="o">=</span> <span class="n">arrays</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span> <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>     <span class="c1"># GH10856</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>     <span class="c1"># raise ValueError if only scalars in dict</span>
+<span class="ne">--&gt; </span><span class="mi">448</span>     <span class="n">index</span> <span class="o">=</span> <span class="n">_extract_index</span><span class="p">(</span><span class="n">arrays</span><span class="p">[</span><span class="o">~</span><span class="n">missing</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">449</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">450</span>     <span class="n">index</span> <span class="o">=</span> <span class="n">ensure_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/pandas/core/internals/construction.py:677,</span> in <span class="ni">_extract_index</span><span class="nt">(data)</span>
+<span class="g g-Whitespace">    </span><span class="mi">675</span> <span class="n">lengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">raw_lengths</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">676</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">677</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All arrays must be of the same length&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">679</span> <span class="k">if</span> <span class="n">have_dicts</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">680</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">681</span>         <span class="s2">&quot;Mixing dicts with non-Series may lead to ambiguous ordering.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">682</span>     <span class="p">)</span>
+
+<span class="ne">ValueError</span>: All arrays must be of the same length
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">

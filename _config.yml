@@ -13,6 +13,5 @@ html:
   use_repository_button: true
 
 launch_buttons:
-  colab_url: "https://colab.research.google.com"
   notebook_interface: "classic"
   thebe: true

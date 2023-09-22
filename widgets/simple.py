@@ -16,19 +16,19 @@ def analyzeSentiment(text):
 
   # map the sentiment to a human readable label
   if sentiment['compound'] >= 0.75:
-    return('Very Positive')
+    return('very positive')
   elif sentiment['compound'] >= 0.4:
-    return('Positive')
+    return('positive')
   elif sentiment['compound'] >= 0.1:
-    return('Leaning Positive')
+    return('leaning positive')
   elif sentiment['compound'] <= -0.1 and sentiment['compound'] > -0.4:
-    return('Leaning Negative')
+    return('leaning negative')
   elif sentiment['compound'] <= -0.4 and sentiment['compound'] > -0.75:
-    return('Negative')
+    return('negative')
   elif sentiment['compound'] <= -0.75:
-    return('Very Negative')
+    return('very negative')
   else:
-    return('Neutral')
+    return('neutral')
 
 def getSentiment(change):
   # Get the sentiment

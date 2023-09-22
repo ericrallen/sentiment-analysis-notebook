@@ -21,7 +21,7 @@ Only return the output from the final step to the user.
 """
 
 OPEN_AI_MODEL = 'gpt-3.5-turbo'
-TEMPERATURE = 0.2
+TEMPERATURE = 0.37
 
 def configureOpenAi(key, model, temp):
   global OPEN_AI_MODEL
@@ -40,7 +40,7 @@ def advancedChatGptSentiment(prompt):
     response = openai.ChatCompletion.create(
         model=OPEN_AI_MODEL,
         messages=messages,
-        temperature=0.15,
+        temperature=TEMPERATURE,
     )
 
     return response.choices[0].message["content"]

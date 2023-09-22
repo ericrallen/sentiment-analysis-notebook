@@ -211,6 +211,24 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
+      <li><a href="https://colab.research.google.com/github/ericrallen/sentiment-analysis-notebook/blob/main/SentimentAnalysisWorkshop.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+      
+      
+      
       <li>
 <button onclick="initThebeSBT()"
   class="btn btn-sm btn-launch-thebe dropdown-item"
@@ -565,8 +583,6 @@ document.write(`
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "146ace1154f84ff1848ec07a97bda989", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="simple-sentiment-analysis-with-nltk">
@@ -620,15 +636,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I love that movie. (positive)
-I hate that movie. (negative)
-I like that movie. (leaning positive)
-I dislike that movie. (leaning negative)
-I saw that movie. (neutral)
-</pre></div>
-</div>
-</div>
 </div>
 <p>We’ve wired the input below up to the same analyzer function from above. Type in some text and see how the analyzer responds.</p>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
@@ -645,8 +652,6 @@ I saw that movie. (neutral)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "62282e7aaa41407fa59bf149820426a9", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 <section id="how-sentiment-analysis-works">
@@ -729,20 +734,6 @@ I saw that movie. (neutral)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa
-Circles do not exist
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up
-Ask HN: What are some of the best books you’ve read about memory and the brain?
-Want to Enjoy Music More? Stop Streaming It
-Scientists Recover RNA from an Extinct Species for the First Time
-Companies Stall Climate Action Despite Earlier Promises
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service
-The joys of maintenance programming (2011)
-My uBlock Origin filters to remove distractions
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -753,20 +744,6 @@ My uBlock Origin filters to remove distractions
 
 
 <span class="n">analyzeStories</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (leaning positive)
-Circles do not exist (neutral)
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (leaning negative)
-Ask HN: What are some of the best books you’ve read about memory and the brain? (positive)
-Want to Enjoy Music More? Stop Streaming It (leaning positive)
-Scientists Recover RNA from an Extinct Species for the First Time (neutral)
-Companies Stall Climate Action Despite Earlier Promises (negative)
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service (neutral)
-The joys of maintenance programming (2011) (positive)
-My uBlock Origin filters to remove distractions (leaning negative)
 </pre></div>
 </div>
 </div>
@@ -817,25 +794,6 @@ My uBlock Origin filters to remove distractions (leaning negative)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;I&#39;, &#39; love&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
-[40, 3021, 430, 5818, 13]
----
-[&#39;I&#39;, &#39; hate&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
-[40, 12491, 430, 5818, 13]
----
-[&#39;I&#39;, &#39; like&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
-[40, 1093, 430, 5818, 13]
----
-[&#39;I&#39;, &#39; dislike&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
-[40, 48969, 430, 5818, 13]
----
-[&#39;I&#39;, &#39; saw&#39;, &#39; that&#39;, &#39; movie&#39;, &#39;.&#39;] (5 tokens)
-[40, 5602, 430, 5818, 13]
----
-</pre></div>
-</div>
-</div>
 </div>
 <p>We’ve wired the input below up to the same tokenizer function from above. Type in some text and see how the tokenizer responds.</p>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
@@ -853,8 +811,6 @@ My uBlock Origin filters to remove distractions (leaning negative)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "96d18df367ac4b4fb5b95aced163bc48", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 </section>
@@ -933,50 +889,6 @@ I&#39;m sorry, but I don&#39;t have access to real-time information as my knowle
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa
-VADER: leaning positive
-gpt-3.5-turbo: positive
----
-Circles do not exist
-VADER: neutral
-gpt-3.5-turbo: neutral
----
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up
-VADER: leaning negative
-gpt-3.5-turbo: neutral
----
-Ask HN: What are some of the best books you’ve read about memory and the brain?
-VADER: positive
-gpt-3.5-turbo: neutral
----
-Want to Enjoy Music More? Stop Streaming It
-VADER: leaning positive
-gpt-3.5-turbo: neutral
----
-Scientists Recover RNA from an Extinct Species for the First Time
-VADER: neutral
-gpt-3.5-turbo: neutral
----
-Companies Stall Climate Action Despite Earlier Promises
-VADER: negative
-gpt-3.5-turbo: negative
----
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service
-VADER: neutral
-gpt-3.5-turbo: neutral
----
-The joys of maintenance programming (2011)
-VADER: positive
-gpt-3.5-turbo: neutral
----
-My uBlock Origin filters to remove distractions
-VADER: leaning negative
-gpt-3.5-turbo: positive
----
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="going-further">
@@ -1004,20 +916,6 @@ gpt-3.5-turbo: positive
   <span class="n">story</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">][</span><span class="s1">&#39;nrclex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
 
   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;)&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa 
-Circles do not exist 
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (positive)
-Ask HN: What are some of the best books you’ve read about memory and the brain? 
-Want to Enjoy Music More? Stop Streaming It 
-Scientists Recover RNA from an Extinct Species for the First Time 
-Companies Stall Climate Action Despite Earlier Promises 
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service (negative)
-The joys of maintenance programming (2011) (trust)
-My uBlock Origin filters to remove distractions (fear, anger, negative, sadness)
 </pre></div>
 </div>
 </div>
@@ -1073,20 +971,6 @@ My uBlock Origin filters to remove distractions (fear, anger, negative, sadness)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (excited, optimistic)
-Circles do not exist (neutral)
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (uncertainty, surprise, sadness)
-Ask HN: What are some of the best books you’ve read about memory and the brain? (curiosity, interest, seeking information)
-Want to Enjoy Music More? Stop Streaming It (neutral)
-Scientists Recover RNA from an Extinct Species for the First Time (curiosity, excitement, awe)
-Companies Stall Climate Action Despite Earlier Promises (frustration, disappointment)
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service (neutral)
-The joys of maintenance programming (2011) (neutral)
-My uBlock Origin filters to remove distractions (neutral)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-input tag_thebe-init docutils container">
 <details class="hide above-input">
@@ -1105,8 +989,6 @@ My uBlock Origin filters to remove distractions (neutral)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "37f3a27ac3504ce0a6d93d8898e628ed", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 </section>
@@ -1160,20 +1042,6 @@ My uBlock Origin filters to remove distractions (neutral)
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please enter your OpenAI API key above and rerun this cell&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa(😃)
-Circles do not exist(😕)
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up(😢)
-Ask HN: What are some of the best books you’ve read about memory and the brain?(😊)
-Want to Enjoy Music More? Stop Streaming It(😕)
-Scientists Recover RNA from an Extinct Species for the First Time(😮🔬🦖🧬🧪)
-Companies Stall Climate Action Despite Earlier Promises(😔😡😢😤😩)
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service(😕)
-The joys of maintenance programming (2011)(😊)
-My uBlock Origin filters to remove distractions(😊)
 </pre></div>
 </div>
 </div>
@@ -1232,20 +1100,6 @@ My uBlock Origin filters to remove distractions(😊)
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">story</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">sentiment</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Please enter your OpenAI API key above and rerun this cell&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa(😃)
-Circles do not exist(🤔)
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up(😮)
-Ask HN: What are some of the best books you’ve read about memory and the brain?(😊)
-Want to Enjoy Music More? Stop Streaming It(😕)
-Scientists Recover RNA from an Extinct Species for the First Time(😮)
-Companies Stall Climate Action Despite Earlier Promises(😔)
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service(😮)
-The joys of maintenance programming (2011)(😒)
-My uBlock Origin filters to remove distractions(😌)
 </pre></div>
 </div>
 </div>
@@ -1309,20 +1163,6 @@ My uBlock Origin filters to remove distractions(😌)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Amazon brings generative AI to Alexa (😃)
-Circles do not exist (🤔)
-Surface and Windows lead Panos Panay is leaving Microsoft in major shake up (😮)
-Ask HN: What are some of the best books you’ve read about memory and the brain? (🤔)
-Want to Enjoy Music More? Stop Streaming It (🤔)
-Scientists Recover RNA from an Extinct Species for the First Time (🤯)
-Companies Stall Climate Action Despite Earlier Promises (😔)
-Elon Musk says X will charge users ‘a small monthly payment’ to use its service (🤔)
-The joys of maintenance programming (2011) (😅)
-My uBlock Origin filters to remove distractions (😌)
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 </section>
@@ -1332,11 +1172,6 @@ My uBlock Origin filters to remove distractions (😌)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">stories</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{37577912: {&#39;title&#39;: &#39;Florida is now adding more solar power than any other state&#39;, &#39;time&#39;: 1695162724, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Neutral&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;optimistic, hopeful, proud&#39;, &#39;emoji&#39;: &#39;😃&#39;, &#39;oneshot&#39;: &#39;😊&#39;, &#39;fewShot&#39;: &#39;🌞&#39;}}}}, 37572743: {&#39;title&#39;: &#39;Show HN: Dittofeed – 1-Click deploy, self-host Mailchimp alternative&#39;, &#39;time&#39;: 1695142399, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Neutral&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;excited, hopeful&#39;, &#39;emoji&#39;: &#39;😃&#39;, &#39;oneshot&#39;: &#39;😃&#39;, &#39;fewShot&#39;: &#39;😃&#39;}}}}, 37567497: {&#39;title&#39;: &#39;Web apps are better than no apps&#39;, &#39;time&#39;: 1695116611, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Leaning Positive&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive&#39;, &#39;advanced&#39;: &#39;optimistic&#39;, &#39;emoji&#39;: &#39;😊&#39;, &#39;oneshot&#39;: &#39;😐&#39;, &#39;fewShot&#39;: &#39;🤷\u200d♂️&#39;}}}}, 37561696: {&#39;title&#39;: &#39;FTC warns pharma companies about sham patent listings designed to delay generics&#39;, &#39;time&#39;: 1695069525, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Negative&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Neutral&#39;, &#39;advanced&#39;: &#39;concerned, cautious, skeptical, frustrated, determined&#39;, &#39;emoji&#39;: &#39;😡😠😤😡😠&#39;, &#39;oneshot&#39;: &#39;😡&#39;, &#39;fewShot&#39;: &#39;😠&#39;}}}}, 37569646: {&#39;title&#39;: &#39;Ask HN: Is Svelte a good choice for large-scale apps?&#39;, &#39;time&#39;: 1695129947, &#39;sentiment&#39;: {&#39;vader&#39;: &#39;Positive&#39;, &#39;nrclex&#39;: {}, &#39;openai&#39;: {&#39;gpt-3.5-turbo&#39;: {&#39;basic&#39;: &#39;Positive.&#39;, &#39;advanced&#39;: &#39;neutral&#39;, &#39;emoji&#39;: &#39;😕&#39;, &#39;oneshot&#39;: &#39;🤔&#39;, &#39;fewShot&#39;: &#39;🤔&#39;}}}}}
 </pre></div>
 </div>
 </div>
@@ -1411,94 +1246,6 @@ My uBlock Origin filters to remove distractions (😌)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Story</th>
-      <th>VADER</th>
-      <th>ChatGPT (Basic)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Amazon brings generative AI to Alexa</td>
-      <td>leaning positive</td>
-      <td>positive</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Circles do not exist</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Surface and Windows lead Panos Panay is leavin...</td>
-      <td>leaning negative</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Ask HN: What are some of the best books you’ve...</td>
-      <td>positive</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Want to Enjoy Music More? Stop Streaming It</td>
-      <td>leaning positive</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Scientists Recover RNA from an Extinct Species...</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Companies Stall Climate Action Despite Earlier...</td>
-      <td>negative</td>
-      <td>negative</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Elon Musk says X will charge users ‘a small mo...</td>
-      <td>neutral</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>The joys of maintenance programming (2011)</td>
-      <td>positive</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>My uBlock Origin filters to remove distractions</td>
-      <td>leaning negative</td>
-      <td>positive</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1518,94 +1265,6 @@ My uBlock Origin filters to remove distractions (😌)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Story</th>
-      <th>NRC</th>
-      <th>ChatGPT (Advanced)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Amazon brings generative AI to Alexa</td>
-      <td></td>
-      <td>excited, optimistic</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Circles do not exist</td>
-      <td></td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Surface and Windows lead Panos Panay is leavin...</td>
-      <td>positive</td>
-      <td>uncertainty, surprise, sadness</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Ask HN: What are some of the best books you’ve...</td>
-      <td></td>
-      <td>curiosity, interest, seeking information</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Want to Enjoy Music More? Stop Streaming It</td>
-      <td></td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Scientists Recover RNA from an Extinct Species...</td>
-      <td></td>
-      <td>curiosity, excitement, awe</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Companies Stall Climate Action Despite Earlier...</td>
-      <td></td>
-      <td>frustration, disappointment</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Elon Musk says X will charge users ‘a small mo...</td>
-      <td>negative</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>The joys of maintenance programming (2011)</td>
-      <td>trust</td>
-      <td>neutral</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>My uBlock Origin filters to remove distractions</td>
-      <td>fear, anger, negative, sadness</td>
-      <td>neutral</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1622,105 +1281,6 @@ My uBlock Origin filters to remove distractions (😌)
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Story</th>
-      <th>Zero Shot</th>
-      <th>One Shot</th>
-      <th>Few Shot</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Amazon brings generative AI to Alexa</td>
-      <td>😃</td>
-      <td>😃</td>
-      <td>😃</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Circles do not exist</td>
-      <td>😕</td>
-      <td>🤔</td>
-      <td>🤔</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Surface and Windows lead Panos Panay is leavin...</td>
-      <td>😢</td>
-      <td>😮</td>
-      <td>😮</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Ask HN: What are some of the best books you’ve...</td>
-      <td>😊</td>
-      <td>😊</td>
-      <td>🤔</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Want to Enjoy Music More? Stop Streaming It</td>
-      <td>😕</td>
-      <td>😕</td>
-      <td>🤔</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Scientists Recover RNA from an Extinct Species...</td>
-      <td>😮🔬🦖🧬🧪</td>
-      <td>😮</td>
-      <td>🤯</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Companies Stall Climate Action Despite Earlier...</td>
-      <td>😔😡😢😤😩</td>
-      <td>😔</td>
-      <td>😔</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Elon Musk says X will charge users ‘a small mo...</td>
-      <td>😕</td>
-      <td>😮</td>
-      <td>🤔</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>The joys of maintenance programming (2011)</td>
-      <td>😊</td>
-      <td>😒</td>
-      <td>😅</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>My uBlock Origin filters to remove distractions</td>
-      <td>😊</td>
-      <td>😌</td>
-      <td>😌</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 </section>
 </section>

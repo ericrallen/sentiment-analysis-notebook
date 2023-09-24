@@ -44,6 +44,9 @@ To run and interact with this notebook locally, follow the instructions below.
    **Note**: you can use whatever Python environment manager you prefer.
 
 4. Run the notebook
+
    ```shell
    jupyter notebook
    ```
+
+5. Open the notebook in your browser and follow along

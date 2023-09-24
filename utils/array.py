@@ -1,7 +1,7 @@
-def checkArrayLengths(*args):
+def checkArrayLengths(*args) -> bool:
     lengths = [len(arg) for arg in args]
 
     if len(set(lengths)) != 1:
-        raise ValueError("Arrays have different lengths: %s" % lengths)
+        return False
 
     return True

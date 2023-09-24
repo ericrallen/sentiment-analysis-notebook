@@ -80,7 +80,7 @@ def betterChatGptSentiment(prompt: str) -> str:
 
 
 # convert sentiment score to label
-def convertSentimentToLabel(sentiment):
+def convertSentimentToLabel(sentiment: float) -> str:
     # map the sentiment to a human readable label
     if sentiment >= 0.75:
         return "Very Positive"
@@ -99,7 +99,7 @@ def convertSentimentToLabel(sentiment):
 
 
 # analyze the sentiment of a string of text
-def analyzeBasicSentiment(text):
+def analyzeBasicSentiment(text: str) -> dict[str, float]:
     if not text:
         return ""
 
@@ -107,7 +107,7 @@ def analyzeBasicSentiment(text):
     return analyzer.polarity_scores(text)
 
 
-def getNRCEmotion(text):
+def getNRCEmotion(text: str) -> list[tuple[str, float]]:
     emotion = NRCLex(text)
 
     return emotion.top_emotions

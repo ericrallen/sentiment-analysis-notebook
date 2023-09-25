@@ -3,6 +3,9 @@ import ipywidgets as widgets
 openAiHeader = widgets.Label(
     "OpenAI API", style=dict(font_size="1.2rem", font_weight="bold")
 )
+lakeraHeader = widgets.Label(
+    "Lakera Guard API", style=dict(font_size="1.2rem", font_weight="bold")
+)
 hackerNewsHeader = widgets.Label(
     "Hacker News API", style=dict(font_size="1.2rem", font_weight="bold")
 )
@@ -14,9 +17,21 @@ apiKeyInput = widgets.Text(
 )
 
 apiKeyUpdateButton = widgets.Button(
-    description="Update Key",
+    description="Update OpenAI Key",
     disabled=False,
     button_style="primary" if not apiKeyInput.value else "danger",
+)
+
+lakeraKeyInput = widgets.Text(
+    value="",
+    placeholder="Enter your Lakera Guard API key",
+    description="Lakera Key",
+)
+
+lakeraKeyUpdateButton = widgets.Button(
+    description="Update Lakera Key",
+    disabled=False,
+    button_style="primary" if not lakeraKeyInput.value else "danger",
 )
 
 modelDropdown = widgets.Dropdown(

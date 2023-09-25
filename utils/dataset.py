@@ -16,6 +16,39 @@ Story = TypedDict(
                 "openai": dict[str, str],
             },
         ),
+        "guard": TypedDict(
+            "LakeraGuardResults",
+            {
+                "categories": TypedDict(
+                    "LakeraGuardCategories",
+                    {
+                        "prompt_injection": bool,
+                        "jailbreak": bool,
+                        "sex": bool,
+                        "hate": bool,
+                        "pii": bool,
+                        "unknown_links": bool,
+                        "relevant_language": bool,
+                    },
+                ),
+                "category_scores": TypedDict(
+                    "LakeraGuardCategoryScores",
+                    {
+                        "prompt_injection": float,
+                        "jailbreak": float,
+                        "sex": float,
+                        "hate": float,
+                        "pii": float,
+                        "unknown_links": float,
+                        "relevant_language": float,
+                    },
+                ),
+                "flagged": bool,
+                "payload": dict[str, str],
+                "pii": str,
+                "links": list[str],
+            },
+        ),
     },
 )
 
@@ -91,7 +124,7 @@ def collateModelData(stories: StoryData) -> dict[str, list[str]]:
     modelData: dict[str, list[str]] = {"Story": []}
 
     try:
-        for storyId, story in stories.items():
+        for _, story in stories.items():
             if "openai" in story["sentiment"]:
                 # if we only have one model result, we'll skip this story
                 if not len(story["sentiment"]["openai"].keys()) > 1:
@@ -158,3 +191,69 @@ def collateModelData(stories: StoryData) -> dict[str, list[str]]:
         print(
             "Error: Please rerun the ChatGPT example cells with each model and then rerun this cell."
         )
+
+
+def collateSafetyData(stories: StoryData) -> dict[str, list[str]]:
+    safetyData: dict[str, list[str]] = {
+        "Story": [],
+        "Flagged": [],
+        "Prompt Injection": [],
+        "Jailbreak": [],
+        "Sexual Content": [],
+        "Hate Speech": [],
+        "PII": [],
+        "Unknown Links": [],
+        "Relevant Language": [],
+    }
+
+    try:
+        for _, story in stories.items():
+            if "guard" in story:
+                safetyData["Story"].append(story["title"])
+
+                if "flagged" in story["guard"]:
+                    safetyData["Flagged"].append(story["guard"]["flagged"])
+
+                if "category_scores" in story["guard"]:
+                    if "prompt_injection" in story["guard"]["category_scores"]:
+                        safetyData["Prompt Injection"].append(
+                            story["guard"]["category_scores"]["prompt_injection"]
+                        )
+
+                    if "jailbreak" in story["guard"]["category_scores"]:
+                        safetyData["Jailbreak"].append(
+                            story["guard"]["category_scores"]["jailbreak"]
+                        )
+
+                    if "sex" in story["guard"]["category_scores"]:
+                        safetyData["Sexual Content"].append(
+                            story["guard"]["category_scores"]["sex"]
+                        )
+
+                    if "hate" in story["guard"]["category_scores"]:
+                        safetyData["Hate Speech"].append(
+                            story["guard"]["category_scores"]["hate"]
+                        )
+
+                    if "pii" in story["guard"]["category_scores"]:
+                        safetyData["PII"].append(
+                            story["guard"]["category_scores"]["pii"]
+                        )
+
+                    if "unknown_links" in story["guard"]["category_scores"]:
+                        safetyData["Unknown Links"].append(
+                            story["guard"]["category_scores"]["unknown_links"]
+                        )
+
+                    if "relevant_language" in story["guard"]["category_scores"]:
+                        safetyData["Relevant Language"].append(
+                            story["guard"]["category_scores"]["relevant_language"]
+                        )
+
+        return safetyData
+
+    except NameError:
+        print("Please run the cells above to gather and analyze some stories.")
+
+    if not len(safetyData["Story"]):
+        print("Error: Please rerun the Lakera Guard cell and then rerun this cell.")

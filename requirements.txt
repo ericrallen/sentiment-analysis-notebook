@@ -7,5 +7,6 @@ nrclex
 numpy
 openai
 pandas
+python-dotenv
 requests-cache
 tiktoken

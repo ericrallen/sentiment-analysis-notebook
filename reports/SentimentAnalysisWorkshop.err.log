@@ -1,0 +1,59 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nbclient/client.py", line 1305, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 166, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/asyncio/base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nbclient/client.py", line 705, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.11.5/x64/lib/python3.11/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+def guard(text: str) -> dict:
+    try:
+        checkInput = lakera.post(
+            "https://api.lakera.ai/v1/guard",
+            json={
+                "input": "Interpretation and analysis of songs written or performed by Pet Shop Boys"
+            },
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {LAKERA_GUARD_ACCESS_KEY}",
+            },
+        )
+
+        return checkInput.json()
+    except:
+        print("Error: Lakera Guard did not respond")
+
+
+for _, story in stories.items():
+    guardResults = guard(story["title"])["results"][0]
+    story["guard"] = guardResults
+
+    print(story["title"])
+    print(guardResults)
+    print("---")
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mKeyError[0m                                  Traceback (most recent call last)
+Cell [0;32mIn[15], line 20[0m
+[1;32m     16[0m         [38;5;28mprint[39m([38;5;124m"[39m[38;5;124mError: Lakera Guard did not respond[39m[38;5;124m"[39m)
+[1;32m     19[0m [38;5;28;01mfor[39;00m _, story [38;5;129;01min[39;00m stories[38;5;241m.[39mitems():
+[0;32m---> 20[0m     guardResults [38;5;241m=[39m [43mguard[49m[43m([49m[43mstory[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mtitle[39;49m[38;5;124;43m"[39;49m[43m][49m[43m)[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mresults[39;49m[38;5;124;43m"[39;49m[43m][49m[[38;5;241m0[39m]
+[1;32m     21[0m     story[[38;5;124m"[39m[38;5;124mguard[39m[38;5;124m"[39m] [38;5;241m=[39m guardResults
+[1;32m     23[0m     [38;5;28mprint[39m(story[[38;5;124m"[39m[38;5;124mtitle[39m[38;5;124m"[39m])
+
+[0;31mKeyError[0m: 'results'
+

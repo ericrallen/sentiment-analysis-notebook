@@ -20,6 +20,7 @@ To run and interact with this notebook locally, follow the instructions below.
 
 1. Python `>=3.11`
 2. [OpenAI API Key](https://platform.openai.com/account/api-keys)
+3. [Lakera Guard Access Key](https://platform.lakera.ai/account/api-keys) (Optional)
 
 ### Installation
 
@@ -43,10 +44,16 @@ To run and interact with this notebook locally, follow the instructions below.
 
    **Note**: you can use whatever Python environment manager you prefer.
 
-4. Run the notebook
+4. Create `.env` file; and fill in your API keys
+
+   ```shell
+   cp .env.example .env
+   ```
+
+5. Run the notebook
 
    ```shell
    jupyter notebook
    ```
 
-5. Open the notebook in your browser and follow along
+6. Open the notebook in your browser and follow along

@@ -4,3 +4,4 @@ _build
 *.sqlite
 .env
 .DS_Store
+.tmp
